@@ -7,11 +7,8 @@ public class PlayerController : MonoBehaviour
 
     // This is johnny's comment. Please don't overwrite.
     // I get money
-<<<<<<< HEAD
     // Jack: Bimbus
-=======
     // jake is here
->>>>>>> 00d9c049855d7086eac96fde64742e02980c2941
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
