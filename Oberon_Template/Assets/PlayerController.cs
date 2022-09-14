@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
         controller = gameObject.AddComponent<CharacterController>();
     }
 
-    void Update()
+    // Changed line
+    private void Update()
     {
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
