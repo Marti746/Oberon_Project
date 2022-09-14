@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 
     // This is johnny's comment. Please don't overwrite.
     // I get money
+    // Jack: Bimbus
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
