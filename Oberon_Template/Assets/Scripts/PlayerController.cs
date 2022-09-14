@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    // This is johnny's comment. Please don't overwrite.
+    // I get money
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -16,7 +19,6 @@ public class PlayerController : MonoBehaviour
         controller = gameObject.AddComponent<CharacterController>();
     }
 
-    // Changed line
     void Update()
     {
         groundedPlayer = controller.isGrounded;
