@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     // I get money
     // Jack: Bimbus
     // jake is here
+    // Omar comment
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
