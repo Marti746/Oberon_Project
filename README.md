@@ -10,3 +10,5 @@ Developers: David Martin, Jake Hoffman
 UI/UX Developer: Johnathan Uptegraph
 Story/Writers: Jack Corcoran, Omar Wallace
 Artist: Chris Vlaha
+
+copyright('Copyright (c) 2022, The Men Whomst Go Hard');
