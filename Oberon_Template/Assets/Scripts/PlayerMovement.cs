@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate() {
         MovePlayer();
+        MyInput();
     }
 
     private void MyInput() {
@@ -56,9 +57,11 @@ public class PlayerMovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump check
+        readyToJump = true;
         if (Input.GetKey(jumpKey) && readyToJump && grounded) {
             readyToJump = false;
             Jump();
+            Debug.Log("Jump Around");
             Invoke(nameof(ResetJump), jumpCooldown);
         }
     }
