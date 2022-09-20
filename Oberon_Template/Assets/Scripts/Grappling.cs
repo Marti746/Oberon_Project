@@ -13,6 +13,6 @@ public class Grappling : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("We do be grappling")
+        Debug.Log("We do be grappling");
     }
 }
