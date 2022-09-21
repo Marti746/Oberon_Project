@@ -188,6 +188,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // check if desired move speed has changed drastically
+        // need to go back and see why this if is running
         // if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
         // {
         //     StopAllCoroutines();
@@ -204,6 +205,7 @@ public class PlayerMovement : MonoBehaviour
         lastDesiredMoveSpeed = desiredMoveSpeed;
     }
 
+    // take a look at this method to see why it doesn't change movespeed
     private IEnumerator SmoothlyLerpMoveSpeed()
     {
         // smoothly lep movementSpeed to desired value
