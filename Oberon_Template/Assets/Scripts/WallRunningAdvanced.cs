@@ -42,8 +42,8 @@ public class WallRunningAdvanced : MonoBehaviour
 
     [Header("References")]
     public Transform orientation;
-    public PlayerCam cam;
-    private PlayerMovementAdvanced pm;
+    public ThirdPersonCam cam;
+    private PlayerMovement pm;
     private Rigidbody rb;
 
     private void Start()
