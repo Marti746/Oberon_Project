@@ -1248,6 +1248,7 @@ GameObject:
   - component: {fileID: 1440728363}
   - component: {fileID: 1440728366}
   - component: {fileID: 1440728367}
+  - component: {fileID: 1440728368}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1305,6 +1306,7 @@ MonoBehaviour:
   sprintSpeed: 20
   slideSpeed: 5
   wallrunSpeed: 5
+  swingSpeed: 0
   speedIncreaseMultiplier: 0.25
   slopeIncreaseMultiplier: 0.25
   groundDrag: 5
@@ -1321,8 +1323,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   maxSlopeAngle: 8
+  cam: {fileID: 0}
   orientation: {fileID: 321955853}
   state: 0
+  freeze: 0
+  activeGrapple: 0
+  swinging: 0
   sliding: 0
   crouching: 0
   wallrunning: 0
@@ -1346,6 +1352,39 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _numFound: 0
+--- !u!114 &1440728368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440728362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25c4798b4886a8345adac162150bc9a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 128
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 128
+  wallRunForce: 0
+  wallJumpUpForce: 0
+  wallJumpSideForce: 0
+  wallClimbSpeed: 0
+  maxWallRunTime: 0
+  jumpKey: 32
+  upwardsRunKey: 304
+  downwardsRunKey: 306
+  wallCheckDistance: 0.7
+  minJumpHeight: 2
+  exitWallTime: 0
+  useGravity: 0
+  gravityCounterForce: 0
+  orientation: {fileID: 0}
+  cam: {fileID: 0}
 --- !u!1 &1722855936
 GameObject:
   m_ObjectHideFlags: 3
