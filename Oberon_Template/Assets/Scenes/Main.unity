@@ -303,7 +303,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177396054}
-  m_LocalRotation: {x: 0.11559233, y: 0.000000017091043, z: -0.0000000019889257, w: 0.99329674}
+  m_LocalRotation: {x: 0.11559233, y: -0.000000017091043, z: 0.0000000019889257, w: 0.99329674}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -979,7 +979,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.11559233, y: 0.000000034182086, z: -0.0000000039778514, w: 0.9932968}
+  m_LocalRotation: {x: 0.11559233, y: -0.000000034182086, z: 0.0000000039778514, w: 0.9932968}
   m_LocalPosition: {x: -2.8730478, y: 2.79, z: -7.6410685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1256,8 +1256,8 @@ MonoBehaviour:
   jumpForce: 12
   jumpCooldown: 0.25
   airMultiplier: 0.4
-  crouchSpeed: 0
-  crouchYScale: 0
+  crouchSpeed: 2
+  crouchYScale: 0.5
   jumpKey: 32
   sprintKey: 304
   crouchKey: 306
@@ -1357,8 +1357,8 @@ MonoBehaviour:
   jumpKey: 32
   upwardsRunKey: 304
   downwardsRunKey: 306
-  wallCheckDistance: 0
-  minJumpHeight: 0
+  wallCheckDistance: 0.7
+  minJumpHeight: 2
   exitWallTime: 0
   useGravity: 0
   gravityCounterForce: 0
