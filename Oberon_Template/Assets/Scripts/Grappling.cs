@@ -8,6 +8,7 @@ public class Grappling : MonoBehaviour
     [Header("References")]
     private PlayerMovement pm;
     public Transform orientation;
+    public Transform cam;
     public Transform gunTip;
     public LayerMask whatIsGrappleable;
     public LineRenderer lr;
@@ -56,7 +57,7 @@ public class Grappling : MonoBehaviour
         pm.freeze = true;
 
         RaycastHit hit;
-        if (Physics.Raycast(orientation.position, orientation.forward, out hit, maxGrappleDistance, whatIsGrappleable))
+        if (Physics.Raycast(cam.position, orientation.forward, out hit, maxGrappleDistance, whatIsGrappleable))
         {
             grapplePoint = hit.point;
 
@@ -64,7 +65,7 @@ public class Grappling : MonoBehaviour
         }
         else
         {
-            grapplePoint = orientation.position + orientation.forward * maxGrappleDistance;
+            grapplePoint = cam.position + orientation.forward * maxGrappleDistance;
 
             Invoke(nameof(StopGrapple), grappleDelayTime);
         }
