@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 881348959}
   - component: {fileID: 881348962}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: PlayerCam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410,7 +410,6 @@ MonoBehaviour:
   sensX: 200
   sensY: 200
   orientation: {fileID: 791627103}
-  camHolder: {fileID: 1403005428}
 --- !u!1 &984540201
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,7 +631,7 @@ GameObject:
   - component: {fileID: 1403005427}
   m_Layer: 0
   m_Name: CameraHolder
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
