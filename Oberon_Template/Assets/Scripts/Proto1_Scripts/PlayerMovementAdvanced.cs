@@ -91,7 +91,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
-        TextStuff();
+        //TextStuff();
 
         // handle drag
         if (grounded)
