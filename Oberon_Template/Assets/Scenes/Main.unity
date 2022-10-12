@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 221378195}
   - component: {fileID: 221378194}
   - component: {fileID: 221378193}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WallRunMe (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -584,6 +584,7 @@ GameObject:
   - component: {fileID: 501148962}
   - component: {fileID: 501148963}
   - component: {fileID: 501148964}
+  - component: {fileID: 501148965}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -640,6 +641,7 @@ MonoBehaviour:
   walkSpeed: 6
   sprintSpeed: 10
   slideSpeed: 30
+  wallrunSpeed: 0
   speedIncreaseMultiplier: 1.5
   slopeIncreaseMultiplier: 2.5
   groundDrag: 4
@@ -663,6 +665,7 @@ MonoBehaviour:
   state: 0
   sliding: 0
   climbing: 0
+  wallrunning: 0
 --- !u!114 &501148962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,6 +734,32 @@ MonoBehaviour:
   minWallNormalAngleChange: 5
   exitingWall: 0
   exitWallTime: 0.2
+--- !u!114 &501148965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501148958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b060d5db3a2dd4bbb349bfa0f70523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 8
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 128
+  wallRunForce: 200
+  wallClimbSpeed: 1
+  maxWallRunTime: 1.5
+  upwardsRunKey: 304
+  downwardsRunKey: 306
+  wallCheckDistance: 0.7
+  minJumpHeight: 2
+  orientation: {fileID: 1064090811}
 --- !u!1 &744799146
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +772,7 @@ GameObject:
   - component: {fileID: 744799150}
   - component: {fileID: 744799149}
   - component: {fileID: 744799148}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WallRunMe (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1847,7 +1876,7 @@ GameObject:
   - component: {fileID: 1487527336}
   - component: {fileID: 1487527335}
   - component: {fileID: 1487527334}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WallRunMe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
