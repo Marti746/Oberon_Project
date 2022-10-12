@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 501148961}
   - component: {fileID: 501148962}
   - component: {fileID: 501148963}
+  - component: {fileID: 501148964}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -351,6 +352,7 @@ MonoBehaviour:
   speedIncreaseMultiplier: 1.5
   slopeIncreaseMultiplier: 2.5
   groundDrag: 4
+  climbSpeed: 0
   jumpForce: 10
   jumpCooldown: 2
   airMultiplier: 0.4
@@ -363,10 +365,13 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 128
+  grounded: 0
   maxSlopeAngle: 40
+  climbingScript: {fileID: 501148964}
   orientation: {fileID: 1064090811}
   state: 0
   sliding: 0
+  climbing: 0
 --- !u!114 &501148962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +410,36 @@ MonoBehaviour:
   slideForce: 200
   slideYScale: 0.5
   slideKey: 306
+--- !u!114 &501148964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501148958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daabb94dc629d014c9e881f7f80065ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orientation: {fileID: 1064090811}
+  rb: {fileID: 501148959}
+  pm: {fileID: 501148961}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 8
+  climbSpeed: 10
+  maxClimbTime: 0.75
+  climbJumpUpForce: 14
+  climbJumpBackForce: 12
+  jumpKey: 32
+  climbJumps: 1
+  detectionLength: 0.7
+  sphereCastRadius: 0.25
+  maxWallLookAngle: 30
+  minWallNormalAngleChange: 5
+  exitingWall: 0
+  exitWallTime: 0.2
 --- !u!1 &1064090810
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,7 +956,7 @@ GameObject:
   - component: {fileID: 1843317533}
   - component: {fileID: 1843317532}
   - component: {fileID: 1843317531}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -999,8 +1034,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1843317530}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.096872, y: -4.361244, z: 19.457893}
-  m_LocalScale: {x: 3.2787, y: 2.4877, z: 1}
+  m_LocalPosition: {x: -12.096872, y: -0.67, z: 19.457893}
+  m_LocalScale: {x: 13.599916, y: 12.39133, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1607608418}
