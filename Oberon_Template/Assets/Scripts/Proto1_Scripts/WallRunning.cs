@@ -10,11 +10,14 @@ public class WallRunning : MonoBehaviour
     public LayerMask whatIsWall;
     public LayerMask whatIsGround;
     public float wallRunForce;
+    public float wallJumpUpForce;
+    public float wallJumpSideForce;
     public float wallClimbSpeed;
     public float maxWallRunTime;
     private float wallRunTimer;
 
     [Header("Input")]
+    public KeyCode jumpKey = KeyCode.Space;
     public KeyCode upwardsRunKey = KeyCode.LeftShift;
     public KeyCode downwardsRunKey = KeyCode.LeftControl;
     private bool upwardsRunning;
@@ -30,6 +33,11 @@ public class WallRunning : MonoBehaviour
     private RaycastHit rightWallHit;
     private bool wallLeft;
     private bool wallRight;
+
+    [Header("Exiting")]
+    private bool exitingWall;
+    public float exitingWallTime;
+    private float exitingWallTimer;
 
     [Header("References")]
     public Transform orientation;
@@ -76,11 +84,28 @@ public class WallRunning : MonoBehaviour
         downwardsRunning = Input.GetKey(downwardsRunKey); 
 
         // State1 - WallRunning
-        if ((wallLeft || wallRight) && verticalInput > 0 && AboveGround())
+        if ((wallLeft || wallRight) && verticalInput > 0 && AboveGround() && !exitingWall)
         {
             // Start Wallrun here
             if (!pm.wallrunning)
                 StartWallRun();
+            
+            // wall jump
+            if (Input.GetKeyDown(jumpKey))
+                WallJump();
+        }
+
+        // State 2 - Exiting
+        else if (exitingWall)
+        {
+            if(pm.wallrunning)
+                StopWallRun();
+            
+            if (exitingWallTimer > 0)
+                exitingWallTimer -= Time.deltaTime;
+
+            if (exitingWallTimer <= 0)
+                exitingWall = false;
         }
 
         else
@@ -122,6 +147,21 @@ public class WallRunning : MonoBehaviour
     private void StopWallRun()
     {
         pm.wallrunning = false;
+    }
+
+    private void WallJump()
+    {
+        // enter exiting wall state
+        exitingWall = true;
+        exitingWallTimer = exitingWallTime;
+        
+        Vector3 wallNormal = wallRight ? rightWallHit.normal : leftWallHit.normal;
+
+        Vector3 forceToApply = transform.up * wallJumpUpForce + wallNormal * wallJumpSideForce;
+
+        // reset y veloctiy and add force
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(forceToApply, ForceMode.Impulse);
     }
 
 }
