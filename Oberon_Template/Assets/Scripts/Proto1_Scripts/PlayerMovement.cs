@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
     public MovementState state;
     public enum MovementState
     {
+        freeze,
+        unlimited,
         walking,
         sprinting,
         wallrunning,
@@ -72,6 +74,11 @@ public class PlayerMovement : MonoBehaviour
     public bool sliding;
     public bool climbing;
     public bool wallrunning;
+
+    public bool freeze;
+    public bool unlimited;
+
+    public bool restricted;
 
     private void Start()
     {
@@ -135,8 +142,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandler()
     {
+        if (freeze)
+        {
+            state = MovementState.freeze;
+            rb.velocity = Vector3.zero;
+        }
+
+        else if(unlimited)
+        {
+            state = MovementState.unlimited;
+            moveSpeed = 999f;
+            return;
+        }
+
         // Mode - Climbing
-        if(climbing)
+        else if(climbing)
         {
             state = MovementState.climbing;
             desiredMoveSpeed = climbSpeed;
@@ -232,7 +252,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (climbingScript.exitingWall) return;
+        if (restricted) return;
+
 
 
         // calculate movement direction
