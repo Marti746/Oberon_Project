@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public float slopeIncreaseMultiplier;
     public float groundDrag;
     public float climbSpeed;
+    public float swingSpeed;
 
 
     [Header("Jumping")]
@@ -61,6 +62,8 @@ public class PlayerMovement : MonoBehaviour
     public enum MovementState
     {
         freeze,
+        grappling,
+        swinging,
         unlimited,
         walking,
         sprinting,
@@ -78,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
     public bool freeze;
     public bool unlimited;
     public bool activeGrapple;
+    public bool swinging;
 
     public bool restricted;
 
@@ -157,6 +161,20 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        // Mode - Grappling
+        else if (activeGrapple)
+        {
+            state = MovementState.grappling;
+            moveSpeed = sprintSpeed;
+        }
+
+        // Mode - Swinging
+        else if (swinging)
+        {
+            state = MovementState.swinging;
+            moveSpeed = swingSpeed;
+        }
+
         // Mode - Climbing
         else if(climbing)
         {
@@ -169,8 +187,6 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.wallrunning;
             desiredMoveSpeed = wallrunSpeed;
         }
-
-
 
         // Mode - Sliding
          else if (sliding)
@@ -257,6 +273,7 @@ public class PlayerMovement : MonoBehaviour
         if (restricted) return;
 
         if (activeGrapple) return;
+        if (swinging) return;
 
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
