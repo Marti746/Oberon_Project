@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/OmarUIFolder/OStyleSheet.uss?fileID=7433441132597879392&amp;guid=b8176fdcc89eac747920bf23cb23b801&amp;type=3#OStyleSheet" />
+    <ui:VisualElement style="justify-content: flex-start; align-items: stretch; position: relative; height: 470px; width: 976px;">
+        <ui:VisualElement name="Container" style="justify-content: space-around; align-items: center; flex-basis: auto; margin-left: 200px; margin-right: 200px; -unity-slice-top: 5; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); flex-direction: row; flex-grow: 0.25; opacity: 1; bottom: -350px;">
+            <ui:Button text="Start" display-tooltip-when-elided="true" class="Button" />
+            <ui:Button text="Options" display-tooltip-when-elided="true" class="Button" />
+            <ui:Button text="Exit" display-tooltip-when-elided="true" class="Button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
