@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
  
 // Makes objects float up & down while gently spinning.
-public class EnemyMovement : MonoBehaviour {
+public class ObjectMovement : MonoBehaviour {
     // User Inputs
     public float xRotation= 15.0f;
     public float yRotation= 0f;
