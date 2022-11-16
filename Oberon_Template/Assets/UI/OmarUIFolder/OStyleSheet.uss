@@ -1,5 +1,9 @@
 .Button {
     width: 100px;
     height: 25px;
-    font-size: 16px;
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    align-items: auto;
+    justify-content: flex-start;
+    flex-direction: column;
 }
