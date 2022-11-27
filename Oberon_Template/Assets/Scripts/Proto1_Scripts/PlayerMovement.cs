@@ -188,6 +188,7 @@ public class PlayerMovement : MonoBehaviour
             desiredMoveSpeed = wallrunSpeed;
         }
 
+
         // Mode - Sliding
          else if (sliding)
         {
@@ -225,6 +226,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             state = MovementState.air;
+            desiredMoveSpeed = 100f;
         }
 
         // check if desiredMoveSpeed has changed drastically
@@ -308,6 +310,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (rb.velocity.magnitude > moveSpeed)
                 rb.velocity = rb.velocity.normalized * moveSpeed;
+
         }
 
         // limiting speed on ground or in air
