@@ -58,6 +58,7 @@ public class WallRunning : MonoBehaviour
     {
         CheckForWall();
         StateMachine();
+        
     }
 
     private void FixedUpdate()
@@ -103,7 +104,10 @@ public class WallRunning : MonoBehaviour
             }
 
             // wall jump
-            if (Input.GetKeyDown(jumpKey)) WallJump();
+            if (Input.GetKeyDown(jumpKey))
+            {
+                WallJump();
+            }
         }
 
         // State 2 - Exiting
@@ -117,13 +121,19 @@ public class WallRunning : MonoBehaviour
 
             if (exitWallTimer <= 0)
                 exitingWall = false;
+
         }
 
         // State 3 - None
         else
         {
             if (pm.wallrunning)
+            {
                 StopWallRun();
+                Debug.Log( " X velocity " + rb.velocity.x);
+                Debug.Log(" Y velocity " + rb.velocity.y);
+                Debug.Log(" Z velocity " + rb.velocity.z);
+            }
         }
     }
 
@@ -144,6 +154,7 @@ public class WallRunning : MonoBehaviour
     private void WallRunningMovement()
     {
         rb.useGravity = useGravity;
+        Debug.Log("Wallrunning start");
 
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
 
@@ -193,7 +204,7 @@ public class WallRunning : MonoBehaviour
         Vector3 forceToApply = transform.up * wallJumpUpForce + wallNormal * wallJumpSideForce;
 
         // reset y velocity and add force
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z + 1000f);
         rb.AddForce(forceToApply, ForceMode.Impulse);
     }
 }

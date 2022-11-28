@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float sprintSpeed;
     public float slideSpeed;
     public float wallrunSpeed;
-    private float desiredMoveSpeed;
+    public float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
     public float speedIncreaseMultiplier;
     public float slopeIncreaseMultiplier;
@@ -228,6 +228,8 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.air;
             desiredMoveSpeed = 10f;
+            
+            
         }
 
         // check if desiredMoveSpeed has changed drastically
