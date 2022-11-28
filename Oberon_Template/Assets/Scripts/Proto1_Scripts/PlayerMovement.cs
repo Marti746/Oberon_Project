@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     public Climbing climbingScript;
 
+    public InputMaster inputMaster;
 
     public Transform orientation;
 
@@ -86,6 +87,19 @@ public class PlayerMovement : MonoBehaviour
 
     public bool restricted;
 
+    // Controller support hopefully
+    public void Awake() {
+        inputMaster = new InputMaster();
+    }
+
+    public void OnEnable() {
+        inputMaster.Enable();
+    }
+
+    public void OnDisable() {
+        inputMaster.Disable();
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -121,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
+        inputMaster.Player.Jump.performed += _ => Jump();
         // when to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {

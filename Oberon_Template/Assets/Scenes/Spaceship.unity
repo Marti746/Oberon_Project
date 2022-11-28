@@ -4282,7 +4282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: a2ee068f56377044da68e44d43970572, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -4293,7 +4293,27 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 16f9e199-dfba-4692-941a-fc28c866a35d
+    m_ActionName: Player/Jump
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 872d2f86-502e-4ef3-b271-4f24094a9e59
+    m_ActionName: Player/Movement
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8975fe58-3ddb-4b9f-b4cb-750a9a39dda3
+    m_ActionName: Player/Grapple
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 91accb0e-e56b-40fa-80b0-3f8b64d2a444
+    m_ActionName: Player/Swinging
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 405e17b5-72ce-48ad-91fa-7fffde0cd2e9
+    m_ActionName: Player/Look
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad Control Scheme
   m_DefaultActionMap: Player

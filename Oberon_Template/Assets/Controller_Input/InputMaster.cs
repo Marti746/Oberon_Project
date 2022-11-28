@@ -62,6 +62,24 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Button"",
+                    ""id"": ""405e17b5-72ce-48ad-91fa-7fffde0cd2e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""01544c26-7078-4d20-beb7-e273f2d6b27d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +126,28 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""action"": ""Swinging"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""622d882d-e6ea-404d-b774-d5ef82ae2975"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""02821c13-cfae-4978-8daa-eb184833fa5c"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad Control Scheme"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -119,7 +159,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<Gamepad>"",
-                    ""isOptional"": false,
+                    ""isOptional"": true,
                     ""isOR"": false
                 }
             ]
@@ -132,6 +172,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Grapple = m_Player.FindAction("Grapple", throwIfNotFound: true);
         m_Player_Swinging = m_Player.FindAction("Swinging", throwIfNotFound: true);
+        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -195,6 +237,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Grapple;
     private readonly InputAction m_Player_Swinging;
+    private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Crouch;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -203,6 +247,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Grapple => m_Wrapper.m_Player_Grapple;
         public InputAction @Swinging => m_Wrapper.m_Player_Swinging;
+        public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -224,6 +270,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Swinging.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwinging;
                 @Swinging.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwinging;
                 @Swinging.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwinging;
+                @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -240,6 +292,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Swinging.started += instance.OnSwinging;
                 @Swinging.performed += instance.OnSwinging;
                 @Swinging.canceled += instance.OnSwinging;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -259,5 +317,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnGrapple(InputAction.CallbackContext context);
         void OnSwinging(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
 }
