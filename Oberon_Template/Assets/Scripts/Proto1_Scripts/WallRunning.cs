@@ -130,9 +130,6 @@ public class WallRunning : MonoBehaviour
             if (pm.wallrunning)
             {
                 StopWallRun();
-                Debug.Log( " X velocity " + rb.velocity.x);
-                Debug.Log(" Y velocity " + rb.velocity.y);
-                Debug.Log(" Z velocity " + rb.velocity.z);
             }
         }
     }
@@ -154,7 +151,6 @@ public class WallRunning : MonoBehaviour
     private void WallRunningMovement()
     {
         rb.useGravity = useGravity;
-        Debug.Log("Wallrunning start");
 
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
 
