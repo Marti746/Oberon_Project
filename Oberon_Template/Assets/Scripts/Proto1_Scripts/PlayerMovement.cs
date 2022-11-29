@@ -110,6 +110,11 @@ public class PlayerMovement : MonoBehaviour
         startYScale = transform.localScale.y;
     }
 
+    public bool isGrounded()
+    {
+        return grounded;
+    }
+
     private void Update()
     {
         // ground check
@@ -174,6 +179,21 @@ public class PlayerMovement : MonoBehaviour
     private void StopCrouch()
     {
         transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+    }
+
+    public bool isSprinting()
+    {
+        return (state == MovementState.sprinting);
+    }
+
+    public bool isWallRunning()
+    {
+        return state == MovementState.wallrunning;
+    }
+
+    public bool isSliding()
+    {
+        return state == MovementState.sliding;
     }
 
     private void StateHandler()
