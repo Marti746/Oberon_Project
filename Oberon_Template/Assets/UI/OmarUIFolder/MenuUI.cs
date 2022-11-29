@@ -9,8 +9,8 @@ public class MenuUI : MonoBehaviour
     private void Awake()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement; 
-        root.Q<Button>("StartGame").clicked += () => changeScene(1);
-        root.Q<Button>("Options").clicked += () => Debug.Log("Options Clacked");
+        root.Q<Button>("StartGame").clicked += () => changeScene(3);
+        root.Q<Button>("FreeRoam").clicked += () => changeScene(1);
         root.Q<Button>("QuitGame").clicked += () => Application.Quit();
     }
 

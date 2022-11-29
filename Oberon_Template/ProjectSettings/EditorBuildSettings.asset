@@ -17,5 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EnemyAI.unity
     guid: ce4420d0dd0fb4033a237d025635c6b2
+<<<<<<< Updated upstream
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 7821de92e5c47ab4db1b4be5420a8f77, type: 2}
+=======
+  - enabled: 1
+    path: Assets/Scenes/Spaceship.unity
+    guid: 94214bcb7550db841a02199037b8c58f
+  m_configObjects: {}
+>>>>>>> Stashed changes

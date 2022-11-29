@@ -2,9 +2,9 @@
     <Style src="project://database/Assets/UI/OmarUIFolder/OStyleSheet.uss?fileID=7433441132597879392&amp;guid=b8176fdcc89eac747920bf23cb23b801&amp;type=3#OStyleSheet" />
     <ui:VisualElement name="Background" style="justify-content: center; align-items: center; position: relative; flex-grow: 1; flex-direction: column; opacity: 1; flex-shrink: 1;">
         <ui:VisualElement style="justify-content: center; flex-grow: 1; align-items: center; flex-direction: column;">
-            <ui:Label text="Oberron Overrun" display-tooltip-when-elided="true" name="Title" style="flex-direction: column; align-items: center; justify-content: flex-start; color: rgba(255, 255, 255, 255); font-size: 30px; -unity-text-align: upper-center;" />
+            <ui:Label text="Oberron Overrun" display-tooltip-when-elided="true" name="Title" style="flex-direction: column; align-items: center; justify-content: flex-start; color: rgb(255, 255, 255); font-size: 30px; -unity-text-align: upper-center;" />
             <ui:Button text="Start Game" display-tooltip-when-elided="true" name="StartGame" class="Button" style="align-items: auto; justify-content: flex-start;" />
-            <ui:Button text="Options" display-tooltip-when-elided="true" name="Options" class="Button" />
+            <ui:Button text="Free Roam" display-tooltip-when-elided="true" name="FreeRoam" enable-rich-text="true" class="Button" />
             <ui:Button text="Quit Game" display-tooltip-when-elided="true" name="QuitGame" class="Button" />
         </ui:VisualElement>
     </ui:VisualElement>
