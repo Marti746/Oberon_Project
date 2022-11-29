@@ -7,6 +7,8 @@ public class Timer : MonoBehaviour {
     public float startTime = 0;
     public bool timerIsRunning = false;
     public Text timeText;
+
+    public RespawnScript rs;
    
     private void Start()
     {
@@ -15,11 +17,15 @@ public class Timer : MonoBehaviour {
     }
     void Update()
     {
-    
         
         if (timerIsRunning)
         {
-            
+
+            if(rs.didRespawn) {
+                startTime = 0;
+                rs.didRespawn = false;
+            }
+
             // Change to a Collision Detection
             if (startTime > -1)
             {
@@ -32,11 +38,13 @@ public class Timer : MonoBehaviour {
             Debug.Log("Game Over!");
             startTime = 0;
             timerIsRunning = false;
+
+            Debug.Log(timerIsRunning);
             }
         }
     }
     }
-    void DisplayTime(float timeToDisplay)
+    public void DisplayTime(float timeToDisplay)
     {
         timeToDisplay += 1;
         float minutes = Mathf.FloorToInt(timeToDisplay / 60); 

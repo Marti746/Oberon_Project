@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RespawnScript : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Transform respawnPoint;
+
+    public bool didRespawn = false;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,7 +19,9 @@ public class RespawnScript : MonoBehaviour
         {
             player.transform.position = respawnPoint.transform.position;
             Physics.SyncTransforms();
+            didRespawn = true;
         }
+        
     }
 
 }
