@@ -7,6 +7,7 @@ public class FootSteps : MonoBehaviour
     public AudioSource footStepsSound;
     public AudioSource sprintingSound;
     public AudioSource ambience;
+    public AudioSource crouchSlideSound;
     private PlayerMovement pm;
 
     void Start()
@@ -16,22 +17,30 @@ public class FootSteps : MonoBehaviour
 
     void Update()
     {
-        if (((Input.GetKey(KeyCode.W) || (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || (Input.GetKey(KeyCode.D)) ) )) && pm.isGrounded() && !pm.isSliding())
+        if (((Input.GetKey(KeyCode.W) || (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || (Input.GetKey(KeyCode.D)) ) )) && pm.isGrounded() && pm.isSliding())
         {
-            if (pm.isSprinting() || pm.isWallRunning())
-            {
-                sprintingSound.enabled = true;
+                sprintingSound.enabled = false;
                 footStepsSound.enabled = false;
-            } else
+                crouchSlideSound.enabled = true;
+        } else if (((Input.GetKey(KeyCode.W) || (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || (Input.GetKey(KeyCode.D))))) && pm.isGrounded() && !pm.isSliding()) 
+            {
+                if (pm.isSprinting() || pm.isWallRunning())
+                {
+                    sprintingSound.enabled = true;
+                    footStepsSound.enabled = false;
+                    crouchSlideSound.enabled = false;
+                } else 
             {
                 sprintingSound.enabled = false;
                 footStepsSound.enabled = true;
+                crouchSlideSound.enabled = false;
             }
             
         } else
         {
             sprintingSound.enabled = false;
             footStepsSound.enabled = false;
+            crouchSlideSound.enabled = false;
         }
         ambience.enabled = true;
     }
