@@ -5,7 +5,7 @@ using UnityEngine;
 // Makes objects float up & down while gently spinning.
 public class EnemyAI : MonoBehaviour {
     // User Inputs
-    public float xRotation= 0f;
+    public float xRotation= -90f;
     public float yRotation= 0f;
     public float zRotation= 0f;
 
