@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Sliding : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Sliding : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
+    public InputMaster inputMaster;
 
     private void Start()
     {
@@ -37,9 +39,11 @@ public class Sliding : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
+        inputMaster.Player.Sliding.performed += _ => StartSlide();
         if (Input.GetKeyDown(slideKey) && (horizontalInput != 0 || verticalInput != 0))
             StartSlide();
 
+        inputMaster.Player.Sliding.canceled += _ => StopSlide();
         if (Input.GetKeyUp(slideKey) && pm.sliding)
             StopSlide();
     }

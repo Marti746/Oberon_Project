@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Swinging : MonoBehaviour
 {
@@ -30,8 +31,11 @@ public class Swinging : MonoBehaviour
     [Header("Input")]
     public KeyCode swingKey = KeyCode.Mouse0;
 
+    public InputMaster inputMaster;
+
     private void Update()
     {
+        //inputMaster.Player.Swinging.performed += _ => StartSwing();
         if (Input.GetKeyDown(swingKey)) StartSwing();
         if (Input.GetKeyUp(swingKey)) StopSwing();
 

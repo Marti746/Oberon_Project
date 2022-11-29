@@ -80,6 +80,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sliding"",
+                    ""type"": ""Button"",
+                    ""id"": ""41ac87f4-96b4-45e5-9cb0-d3d16ee86fe8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +157,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf4edf72-a0a4-4abc-a2c8-71195189faf8"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad Control Scheme"",
+                    ""action"": ""Sliding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -174,6 +194,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_Swinging = m_Player.FindAction("Swinging", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+        m_Player_Sliding = m_Player.FindAction("Sliding", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -239,6 +260,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Swinging;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Crouch;
+    private readonly InputAction m_Player_Sliding;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -249,6 +271,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @Swinging => m_Wrapper.m_Player_Swinging;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+        public InputAction @Sliding => m_Wrapper.m_Player_Sliding;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -276,6 +299,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Sliding.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSliding;
+                @Sliding.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSliding;
+                @Sliding.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSliding;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -298,6 +324,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
+                @Sliding.started += instance.OnSliding;
+                @Sliding.performed += instance.OnSliding;
+                @Sliding.canceled += instance.OnSliding;
             }
         }
     }
@@ -319,5 +348,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnSwinging(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
+        void OnSliding(InputAction.CallbackContext context);
     }
 }

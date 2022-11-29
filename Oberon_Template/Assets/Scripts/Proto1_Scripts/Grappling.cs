@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Grappling : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class Grappling : MonoBehaviour
     [Header("Input")]
     public KeyCode grappleKey = KeyCode.Mouse1;
 
+    public InputMaster inputMaster;
+
     private bool grappling;
 
     private void Start() 
@@ -34,6 +37,7 @@ public class Grappling : MonoBehaviour
 
     private void Update() 
     {
+        //inputMaster.Player.Grapple.performed += _ => StartGrapple();
         if (Input.GetKeyDown(grappleKey))
             StartGrapple();
         

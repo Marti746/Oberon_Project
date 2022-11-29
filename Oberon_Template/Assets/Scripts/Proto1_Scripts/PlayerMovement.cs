@@ -147,17 +147,33 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // start crouch
-        if (Input.GetKeyDown(crouchKey))
-        {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-        }
+        // if (Input.GetKeyDown(crouchKey))
+        // {
+        //     transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+        //     rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        // }
 
+        inputMaster.Player.Crouch.performed += _ => Crouch();
+        if (Input.GetKeyDown(crouchKey))    Crouch();
+
+        inputMaster.Player.Crouch.canceled += _ => StopCrouch();
         // stop crouch
         if (Input.GetKeyUp(crouchKey))
         {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+            StopCrouch();
+            //transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
+    }
+
+    private void Crouch()
+    {
+        transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+    }
+
+    private void StopCrouch()
+    {
+        transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
     }
 
     private void StateHandler()
