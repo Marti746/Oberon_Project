@@ -39,11 +39,11 @@ public class Sliding : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        inputMaster.Player.Sliding.performed += _ => StartSlide();
+        //inputMaster.Player.Sliding.performed += _ => StartSlide();
         if (Input.GetKeyDown(slideKey) && (horizontalInput != 0 || verticalInput != 0))
             StartSlide();
 
-        inputMaster.Player.Sliding.canceled += _ => StopSlide();
+        //inputMaster.Player.Sliding.canceled += _ => StopSlide();
         if (Input.GetKeyUp(slideKey) && pm.sliding)
             StopSlide();
     }
