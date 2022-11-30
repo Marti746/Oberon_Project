@@ -9,13 +9,13 @@ public class MenuUI : MonoBehaviour
     private void Awake()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement; 
-        root.Q<Button>("StartGame").clicked += () => changeScene(3);
-        root.Q<Button>("FreeRoam").clicked += () => changeScene(1);
+        root.Q<Button>("StartGame").clicked += () => changeScene("Spaceship");
+        root.Q<Button>("FreeRoam").clicked += () => changeScene("Main");
         root.Q<Button>("QuitGame").clicked += () => Application.Quit();
     }
 
-    public void changeScene(int sceneIndex)
+    public void changeScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene(sceneName);
     }
 }
