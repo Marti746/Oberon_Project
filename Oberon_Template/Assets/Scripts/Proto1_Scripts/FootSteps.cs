@@ -23,7 +23,7 @@ public class FootSteps : MonoBehaviour
 
     void Update()
     {
-        if(player.GetButtonDown("BackMenu") || Input.GetKey(KeyCode.Tab)) {
+        if(player.GetButtonDown("BackMenu")) {
             SceneManager.LoadScene("Main Menu");
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
