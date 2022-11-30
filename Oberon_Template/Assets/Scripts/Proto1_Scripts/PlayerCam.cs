@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Rewired;
 //using DG.Tweening;
 
 public class PlayerCam : MonoBehaviour
@@ -18,6 +19,9 @@ public class PlayerCam : MonoBehaviour
     public InputMaster inputMaster;
     Vector3 looking;
 
+    [SerializeField] private int playerID = 0;
+    [SerializeField] private Player player;
+
     private void Awake()
     {
         inputMaster = new InputMaster();
@@ -30,13 +34,16 @@ public class PlayerCam : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        player = ReInput.players.GetPlayer(playerID);
     }
 
     private void Update()
     {
         // get mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        // float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
+        // float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        float mouseX = player.GetAxisRaw("Look Horizontal") * Time.deltaTime * sensX;
+        float mouseY = player.GetAxisRaw("Look Vertical") * Time.deltaTime * sensY;
 
         yRotation += mouseX;
 

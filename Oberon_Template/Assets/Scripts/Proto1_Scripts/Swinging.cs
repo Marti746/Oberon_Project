@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Rewired;
 
 public class Swinging : MonoBehaviour
 {
@@ -31,13 +31,20 @@ public class Swinging : MonoBehaviour
     [Header("Input")]
     public KeyCode swingKey = KeyCode.Mouse0;
 
-    public InputMaster inputMaster;
+    [SerializeField] private int playerID = 0;
+    [SerializeField] private Player playerInput;
+
+    private void Start()
+    {
+        playerInput = ReInput.players.GetPlayer(playerID);
+    }
 
     private void Update()
     {
-        //inputMaster.Player.Swinging.performed += _ => StartSwing();
-        if (Input.GetKeyDown(swingKey)) StartSwing();
-        if (Input.GetKeyUp(swingKey)) StopSwing();
+        // if (Input.GetKeyDown(swingKey)) StartSwing();
+        // if (Input.GetKeyUp(swingKey)) StopSwing();
+        if (playerInput.GetButtonDown("Swinging")) StartSwing();
+        if (playerInput.GetButtonUp("Swinging")) StopSwing();
 
         CheckForSwingPoints();
 
@@ -142,7 +149,7 @@ public class Swinging : MonoBehaviour
         if (Input.GetKey(KeyCode.W)) rb.AddForce(orientation.forward * horizontalThrustForce * Time.deltaTime);
 
         // shorten cable
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space)) //playerInput.GetButtonDown("PullIn")
         {
             Vector3 directionToPoint = swingPoint - transform.position;
             rb.AddForce(directionToPoint.normalized * forwardThrustForce * Time.deltaTime);

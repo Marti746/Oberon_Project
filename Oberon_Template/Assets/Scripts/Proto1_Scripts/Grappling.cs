@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Rewired;
 
 public class Grappling : MonoBehaviour
 {
@@ -26,19 +26,20 @@ public class Grappling : MonoBehaviour
     [Header("Input")]
     public KeyCode grappleKey = KeyCode.Mouse1;
 
-    public InputMaster inputMaster;
+    [SerializeField] private int playerID = 0;
+    [SerializeField] private Player player;
 
     private bool grappling;
 
     private void Start() 
     {
         pm = GetComponent<PlayerMovement>();
+        player = ReInput.players.GetPlayer(playerID);
     }
 
     private void Update() 
     {
-        //inputMaster.Player.Grapple.performed += _ => StartGrapple();
-        if (Input.GetKeyDown(grappleKey))
+        if (player.GetButtonDown("Grappling"))
             StartGrapple();
         
         if (grapplingCdTimer > 0)

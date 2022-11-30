@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Rewired;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -49,7 +50,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     public Climbing climbingScript;
 
-    public InputMaster inputMaster;
+    [SerializeField] private int playerID = 0;
+    [SerializeField] private Player player;
 
     public Transform orientation;
 
@@ -88,17 +90,17 @@ public class PlayerMovement : MonoBehaviour
     public bool restricted;
 
     // Controller support hopefully
-    public void Awake() {
-        inputMaster = new InputMaster();
-    }
+    // public void Awake() {
+    //     inputMaster = new InputMaster();
+    // }
 
-    public void OnEnable() {
-        inputMaster.Enable();
-    }
+    // public void OnEnable() {
+    //     inputMaster.Enable();
+    // }
 
-    public void OnDisable() {
-        inputMaster.Disable();
-    }
+    // public void OnDisable() {
+    //     inputMaster.Disable();
+    // }
 
     private void Start()
     {
@@ -108,6 +110,7 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
 
         startYScale = transform.localScale.y;
+        player = ReInput.players.GetPlayer(playerID);
     }
 
     public bool isGrounded()
@@ -138,11 +141,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void MyInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-        inputMaster.Player.Jump.performed += _ => Jump();
-        // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        // horizontalInput = Input.GetAxisRaw("Horizontal");
+        // verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = player.GetAxisRaw("Move Horizontal");
+        verticalInput = player.GetAxisRaw("Move Vertical");
+        
+        // when to jump     (Input.GetKey(jumpKey))
+        if (player.GetButtonDown("Jump") && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -152,37 +157,21 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // start crouch
-        // if (Input.GetKeyDown(crouchKey))
-        // {
-        //     transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-        //     rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-        // }
-
-        inputMaster.Player.Crouch.performed += _ => Crouch();
-        if (Input.GetKeyDown(crouchKey))    Crouch();
-
-        inputMaster.Player.Crouch.canceled += _ => StopCrouch();
-        // stop crouch
-        if (Input.GetKeyUp(crouchKey))
+        if (player.GetButtonDown("Crouch"))
         {
-            StopCrouch();
-            //transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
         }
 
-        inputMaster.Player.Sprinting.performed += ctx => Sprint();
-        inputMaster.Player.Sprinting.canceled += ctx => Walk();
+        //inputMaster.Player.Crouch.performed += _ => Crouch();
+        //if (Input.GetKeyDown(crouchKey))    Crouch();
 
-    }
-
-    private void Crouch()
-    {
-        transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-    }
-
-    private void StopCrouch()
-    {
-        transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+        //inputMaster.Player.Crouch.canceled += _ => StopCrouch();
+        // stop crouch
+        if (player.GetButtonUp("Crouch"))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+        }
     }
 
     public bool isSprinting()
@@ -264,20 +253,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Mode - Sprinting
-        else if (grounded && (Input.GetKey(sprintKey) || inputMaster.Player.Sprinting.triggered))//Input.GetButtonDown("Sprint"))
+        else if (grounded && player.GetButtonDown("Sprint"))//(Input.GetKey(sprintKey) || inputMaster.Player.Sprinting.triggered))//Input.GetButtonDown("Sprint"))
         {
-            Debug.Log("Sprinting");
-            Sprint();
-            // state = MovementState.sprinting;
-            // desiredMoveSpeed = sprintSpeed;
+            state = MovementState.sprinting;
+            desiredMoveSpeed = sprintSpeed;
         }
 
         // Mode - Walking
         else if (grounded)
         {
-            Walk();
-            // state = MovementState.walking;
-            // desiredMoveSpeed = walkSpeed;
+            //Walk();
+            state = MovementState.walking;
+            desiredMoveSpeed = walkSpeed;
         }
 
         // Mode - Air
@@ -303,17 +290,17 @@ public class PlayerMovement : MonoBehaviour
         lastDesiredMoveSpeed = desiredMoveSpeed;
     }
 
-    private void Sprint()
-    {
-        state = MovementState.sprinting;
-        desiredMoveSpeed = sprintSpeed;
-    }
+    // private void Sprint()
+    // {
+    //     state = MovementState.sprinting;
+    //     desiredMoveSpeed = sprintSpeed;
+    // }
 
-    private void Walk()
-    {
-        state = MovementState.walking;
-        desiredMoveSpeed = walkSpeed;
-    }
+    // private void Walk()
+    // {
+    //     state = MovementState.walking;
+    //     desiredMoveSpeed = walkSpeed;
+    // }
 
     private IEnumerator SmoothlyLerpMoveSpeed()
     {

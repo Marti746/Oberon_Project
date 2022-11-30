@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Rewired;
 
 public class Sliding : MonoBehaviour
 {
@@ -24,33 +24,31 @@ public class Sliding : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
-    public InputMaster inputMaster;
+    [SerializeField] private int playerID = 0;
+    [SerializeField] private Player player;
 
-    private void Awake()
-    {
-        inputMaster = new InputMaster();
-        //inputMaster.Player.Sliding.performed += ctx => StartSlide();
-        //inputMaster.Player.Sliding.canceled += ctx => StopSlide();
-    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
 
         startYScale = playerObj.localScale.y;
+        player = ReInput.players.GetPlayer(playerID);
     }
 
     private void Update()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        // horizontalInput = Input.GetAxisRaw("Horizontal");
+        // verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = player.GetAxisRaw("Move Horizontal");
+        verticalInput = player.GetAxisRaw("Move Vertical");
 
         //inputMaster.Player.Sliding.performed += _ => StartSlide();
-        if (Input.GetKeyDown(slideKey) && (horizontalInput != 0 || verticalInput != 0))
+        if (player.GetButtonDown("Sliding") && (horizontalInput != 0 || verticalInput != 0))
             StartSlide();
 
         //inputMaster.Player.Sliding.canceled += _ => StopSlide();
-        if (Input.GetKeyUp(slideKey) && pm.sliding)
+        if (player.GetButtonUp("Sliding") && pm.sliding)
             StopSlide();
     }
 
