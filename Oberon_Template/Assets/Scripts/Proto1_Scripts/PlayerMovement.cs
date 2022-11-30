@@ -253,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Mode - Sprinting
-        else if (grounded && player.GetButtonDown("Sprint"))//(Input.GetKey(sprintKey) || inputMaster.Player.Sprinting.triggered))//Input.GetButtonDown("Sprint"))
+        else if (grounded && player.GetButton("Sprint"))//(Input.GetKey(sprintKey))
         {
             state = MovementState.sprinting;
             desiredMoveSpeed = sprintSpeed;
