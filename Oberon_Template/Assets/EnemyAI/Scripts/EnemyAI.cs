@@ -21,7 +21,6 @@ public class EnemyAI : MonoBehaviour {
 
     public Transform enemyTarget;
     public Rigidbody enemyRigidBody;
-    public GameObject thisObjectsRotation;
 
     public float turn;
     public float enemyVelocity;
@@ -52,7 +51,6 @@ public class EnemyAI : MonoBehaviour {
     private void idleMovement(){
          // Spin object around any Axis
         transform.Rotate(new Vector3(Time.deltaTime * xRotation, Time.deltaTime * yRotation, Time.deltaTime * zRotation), Space.World);
-        thisObjectsRotation.transform.eulerAngles = new Vector3(thisObjectsRotation.transform.eulerAngles.x - 90, thisObjectsRotation.transform.eulerAngles.y, thisObjectsRotation.transform.eulerAngles.z);
         // Spin object around X-Axis
         // transform.Rotate(new Vector3(Time.deltaTime * Rotation, 0f, 0f), Space.World);
 

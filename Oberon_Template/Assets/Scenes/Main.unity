@@ -2273,7 +2273,7 @@ GameObject:
   - component: {fileID: 1528594447}
   m_Layer: 0
   m_Name: RespawnPoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2634,6 +2634,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5754084199372789682, guid: e7296f2cd0c026f4db59876f69b75e1b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2534964839176971238, guid: bfb8e9c2f88ebbe4bbac3a7acca62617, type: 3}
     - target: {fileID: 919132149155446097, guid: e7296f2cd0c026f4db59876f69b75e1b, type: 3}
       propertyPath: m_Name
       value: enemy_01
