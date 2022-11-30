@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FootSteps : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class FootSteps : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKey(KeyCode.Escape)) {
+            SceneManager.LoadScene("Main Menu");
+        }
+
+
         if (((Input.GetKey(KeyCode.W) || (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || (Input.GetKey(KeyCode.D)) ) )) && pm.isGrounded() && pm.isSliding())
         {
                 sprintingSound.enabled = false;
