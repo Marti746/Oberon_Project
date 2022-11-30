@@ -21,6 +21,7 @@ public class EnemyAI : MonoBehaviour {
 
     public Transform enemyTarget;
     public Rigidbody enemyRigidBody;
+    public GameObject thisObjectsRotation;
 
     public float turn;
     public float enemyVelocity;
@@ -51,7 +52,7 @@ public class EnemyAI : MonoBehaviour {
     private void idleMovement(){
          // Spin object around any Axis
         transform.Rotate(new Vector3(Time.deltaTime * xRotation, Time.deltaTime * yRotation, Time.deltaTime * zRotation), Space.World);
-        
+        thisObjectsRotation.transform.eulerAngles = new Vector3(thisObjectsRotation.transform.eulerAngles.x - 90, thisObjectsRotation.transform.eulerAngles.y, thisObjectsRotation.transform.eulerAngles.z);
         // Spin object around X-Axis
         // transform.Rotate(new Vector3(Time.deltaTime * Rotation, 0f, 0f), Space.World);
 
@@ -64,8 +65,10 @@ public class EnemyAI : MonoBehaviour {
         // Float up/down with a Sin()
         tempPos = posOffset;
 
+
         if (xAxis == true) {
             tempPos.x += Mathf.Sin (Time.fixedTime * Mathf.PI * frequency) * amplitude;
+            
         }
 
          if (yAxis == true) {
@@ -82,7 +85,7 @@ public class EnemyAI : MonoBehaviour {
     private void ChasePlayer(){
         enemyRigidBody.velocity = transform.forward * enemyVelocity;
 
-        var enemyTargetRotation = Quaternion.LookRotation(enemyTarget.position - transform.position);
+        var enemyTargetRotation = Quaternion.LookRotation(enemyTarget.rotation - transform.rotation);
 
         enemyRigidBody.MoveRotation(Quaternion.RotateTowards(transform.rotation, enemyTargetRotation, turn));
     }
