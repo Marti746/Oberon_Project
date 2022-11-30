@@ -26,6 +26,12 @@ public class Sliding : MonoBehaviour
 
     public InputMaster inputMaster;
 
+    private void Awake()
+    {
+        inputMaster = new InputMaster();
+        //inputMaster.Player.Sliding.performed += ctx => StartSlide();
+        //inputMaster.Player.Sliding.canceled += ctx => StopSlide();
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();

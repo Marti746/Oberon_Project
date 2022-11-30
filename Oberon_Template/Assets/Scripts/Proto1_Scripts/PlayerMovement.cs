@@ -168,6 +168,10 @@ public class PlayerMovement : MonoBehaviour
             StopCrouch();
             //transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
+
+        inputMaster.Player.Sprinting.performed += ctx => Sprint();
+        inputMaster.Player.Sprinting.canceled += ctx => Walk();
+
     }
 
     private void Crouch()
@@ -260,17 +264,20 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Mode - Sprinting
-        else if (grounded && Input.GetKey(sprintKey))
+        else if (grounded && (Input.GetKey(sprintKey) || inputMaster.Player.Sprinting.triggered))//Input.GetButtonDown("Sprint"))
         {
-            state = MovementState.sprinting;
-            desiredMoveSpeed = sprintSpeed;
+            Debug.Log("Sprinting");
+            Sprint();
+            // state = MovementState.sprinting;
+            // desiredMoveSpeed = sprintSpeed;
         }
 
         // Mode - Walking
         else if (grounded)
         {
-            state = MovementState.walking;
-            desiredMoveSpeed = walkSpeed;
+            Walk();
+            // state = MovementState.walking;
+            // desiredMoveSpeed = walkSpeed;
         }
 
         // Mode - Air
@@ -294,6 +301,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         lastDesiredMoveSpeed = desiredMoveSpeed;
+    }
+
+    private void Sprint()
+    {
+        state = MovementState.sprinting;
+        desiredMoveSpeed = sprintSpeed;
+    }
+
+    private void Walk()
+    {
+        state = MovementState.walking;
+        desiredMoveSpeed = walkSpeed;
     }
 
     private IEnumerator SmoothlyLerpMoveSpeed()

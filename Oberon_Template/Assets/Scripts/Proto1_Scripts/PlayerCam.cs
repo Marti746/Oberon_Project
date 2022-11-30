@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 //using DG.Tweening;
 
 public class PlayerCam : MonoBehaviour
@@ -13,6 +14,17 @@ public class PlayerCam : MonoBehaviour
 
     float xRotation;
     float yRotation;
+
+    public InputMaster inputMaster;
+    Vector3 looking;
+
+    private void Awake()
+    {
+        inputMaster = new InputMaster();
+        inputMaster.Player.Look.performed += ctx => looking = ctx.ReadValue<Vector3>();
+        inputMaster.Player.Look.canceled += ctx => looking = Vector3.zero;
+
+    }
 
     private void Start()
     {
