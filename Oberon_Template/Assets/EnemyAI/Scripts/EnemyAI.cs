@@ -85,7 +85,7 @@ public class EnemyAI : MonoBehaviour {
     private void ChasePlayer(){
         enemyRigidBody.velocity = transform.forward * enemyVelocity;
 
-        var enemyTargetRotation = Quaternion.LookRotation(enemyTarget.rotation - transform.rotation);
+        var enemyTargetRotation = Quaternion.LookRotation(enemyTarget.position - transform.position);
 
         enemyRigidBody.MoveRotation(Quaternion.RotateTowards(transform.rotation, enemyTargetRotation, turn));
     }
