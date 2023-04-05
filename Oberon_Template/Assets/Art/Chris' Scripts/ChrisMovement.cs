@@ -22,12 +22,11 @@ public class ChrisMovement : MonoBehaviour
 
     int jumpCharges;
 
+    [HideInInspector] public bool isGrounded;
 
-    bool isGrounded;
+    [HideInInspector] public bool isSprinting;
 
-    bool isSprinting;
-
-    bool isCrouching;
+    [HideInInspector] public bool isCrouching;
 
 
     float speed;
@@ -126,7 +125,6 @@ public class ChrisMovement : MonoBehaviour
         {
             move.x = 0;
         }
-        speed = runSpeed;
         if (input.z != 0)
         {
             move.z += input.z * speed;
