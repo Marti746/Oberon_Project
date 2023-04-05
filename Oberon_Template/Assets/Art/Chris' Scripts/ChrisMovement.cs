@@ -22,13 +22,24 @@ public class ChrisMovement : MonoBehaviour
 
     int jumpCharges;
 
+
     bool isGrounded;
+
+    bool isSprinting;
+
+    bool isCrouching;
+
 
     float speed;
 
     public float runSpeed;
 
     public float airSpeed;
+
+    public float sprintSpeed;
+
+    public float crouchSpeed;
+
 
     float gravity;
 
@@ -37,10 +48,20 @@ public class ChrisMovement : MonoBehaviour
     public float jumpHeight;
 
 
+    float startHeight;
+
+    float crouchHeight = 0.5f;
+
+    Vector3 crouchingCenter = new Vector3(0, 0.5f, 0);
+
+    Vector3 standingCenter = new Vector3(0, 0, 0);
+
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        startHeight = transform.localScale.y;
     }
 
     void HandleInput()
@@ -50,11 +71,29 @@ public class ChrisMovement : MonoBehaviour
         input = transform.TransformDirection(input);
         input = Vector3.ClampMagnitude(input, 1f);
 
+        //Jump
         if (Input.GetKeyUp(KeyCode.Space) && jumpCharges > 0)
         {
             Jump();
         }
-
+        //Crouch
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Crouch();
+        }
+        if (Input.GetKeyUp(KeyCode.C))
+        {
+            ExitCrouch();
+        }
+        //Sprint
+        if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
+        {
+            isSprinting = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            isSprinting = false;
+        }
     }
 
 
@@ -78,7 +117,7 @@ public class ChrisMovement : MonoBehaviour
 
     void GroundedMovement()
     {
-        speed = runSpeed;
+        speed = isSprinting ? sprintSpeed : isCrouching ? crouchSpeed : runSpeed;
         if (input.x != 0)
         {
             move.x += input.x * speed;
@@ -129,5 +168,21 @@ public class ChrisMovement : MonoBehaviour
     {
         Yvelocity.y = Mathf.Sqrt(jumpHeight * -2f * normalGravity);
         jumpCharges = jumpCharges - 1;
+    }
+
+    void Crouch()
+    {
+        controller.height = crouchHeight;
+        controller.center = crouchingCenter;
+        transform.localScale = new Vector3(transform.localScale.x, crouchHeight, transform.localScale.z);
+        isCrouching = true;
+    }
+
+    void ExitCrouch()
+    {
+        controller.height = (startHeight * 2);
+        controller.center = standingCenter;
+        transform.localScale = new Vector3(transform.localScale.x, startHeight, transform.localScale.z);
+        isCrouching = false;
     }
 }
