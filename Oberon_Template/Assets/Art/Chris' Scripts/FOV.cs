@@ -36,11 +36,11 @@ public class FOV : MonoBehaviour
     {
         if (chrisMovement.isSprinting == true)
         {
-            cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, fovSprint, 100 * Time.deltaTime) ;
+            cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, fovSprint, 50 * Time.deltaTime) ;
         }
         else
         {
-            cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, fovWalk, 100 * Time.deltaTime);
+            cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, fovWalk, 50 * Time.deltaTime);
         }
 
     }

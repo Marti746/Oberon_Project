@@ -71,7 +71,7 @@ public class ChrisMovement : MonoBehaviour
         input = Vector3.ClampMagnitude(input, 1f);
 
         //Jump
-        if (Input.GetKeyUp(KeyCode.Space) && jumpCharges > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCharges > 0)
         {
             Jump();
         }

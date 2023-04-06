@@ -36,39 +36,44 @@ public class ViewBobbing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FOV stuff
-        if (chrisMovement.isSprinting == true)
+
+        if (chrisMovement.isGrounded == true)
         {
-            SwaySpeed = SprintSpeed;
+            //FOV stuff
+            if (chrisMovement.isSprinting == true)
+            {
+                SwaySpeed = SprintSpeed;
+            }
+            else
+            {
+                SwaySpeed = EffectSpeed;
+            }
+
+            Vector3 inputVector = new Vector3(Input.GetAxis("Vertical"), 0f, Input.GetAxis("Horizontal"));
+
+            if (inputVector.magnitude > 0f)
+            {
+                SinTime += Time.deltaTime * SwaySpeed;
+            }
+            else
+            {
+                SinTime = 0f;
+
+            }
+
+            float sinAmountY = -Mathf.Abs(EffectIntensity * Mathf.Sin(SinTime));
+            Vector3 sinAmountX = FollowerInstance.transform.right * EffectIntensity * Mathf.Cos(SinTime) * EffectIntensityX;
+
+            FollowerInstance.Offset = new Vector3
+            {
+                x = OriginalOffset.x,
+                y = OriginalOffset.y + sinAmountY,
+                z = OriginalOffset.z
+            };
+
+            FollowerInstance.Offset += sinAmountX;
         }
-        else
-        {
-            SwaySpeed = EffectSpeed;
-        }
-        Vector3 inputVector = new Vector3(Input.GetAxis("Vertical"), 0f, Input.GetAxis("Horizontal"));
 
-        if (inputVector.magnitude > 0f)
-        {
-            SinTime += Time.deltaTime * SwaySpeed;
-        }
-        else
-        {
-            SinTime = 0f;
-        }
-
-        float sinAmountY = -Mathf.Abs(EffectIntensity * Mathf.Sin(SinTime));
-        Vector3 sinAmountX = FollowerInstance.transform.right * EffectIntensity * Mathf.Cos(SinTime) * EffectIntensityX;
-
-        FollowerInstance.Offset = new Vector3
-        {
-            x = OriginalOffset.x,
-            y = OriginalOffset.y + sinAmountY,
-            z = OriginalOffset.z
-        };
-
-        FollowerInstance.Offset += sinAmountX;
-
-        
 
     }
 }
