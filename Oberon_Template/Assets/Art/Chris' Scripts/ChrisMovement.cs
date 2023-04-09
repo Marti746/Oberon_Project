@@ -19,6 +19,8 @@ public class ChrisMovement : MonoBehaviour
 
     Vector3 Yvelocity;
 
+    Vector3 forwardDirection;
+
 
     int jumpCharges;
 
@@ -27,6 +29,13 @@ public class ChrisMovement : MonoBehaviour
     [HideInInspector] public bool isSprinting;
 
     [HideInInspector] public bool isCrouching;
+
+    [HideInInspector] public bool isSliding;
+
+    public float slideSpeedIncrease;
+
+    public float slideSpeedDecrease;
+
 
 
     float speed;
@@ -55,12 +64,26 @@ public class ChrisMovement : MonoBehaviour
 
     Vector3 standingCenter = new Vector3(0, 0, 0);
 
+    float slideTimer;
+
+    public float maxSlideTimer;
+
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         startHeight = transform.localScale.y;
+    }
+
+    void IncreaseSpeed(float speedIncrease)
+    {
+        speed += speedIncrease;
+    }
+
+    void DecreaseSpeed(float speedDecrease)
+    {
+        speed -= speedDecrease * Time.deltaTime;
     }
 
     void HandleInput()
@@ -100,13 +123,23 @@ public class ChrisMovement : MonoBehaviour
     void Update()
     {
         HandleInput();
-        if (isGrounded)
+        if (isGrounded && !isSliding)
         {
             GroundedMovement();
         }
-        else
+        else if (!isGrounded)
         {
             AirMovement();
+        }
+        else if (isSliding)
+        {
+            SlideMovement();
+            DecreaseSpeed(slideSpeedDecrease);
+            slideTimer -= 1f * Time.deltaTime;
+            if (slideTimer < 0)
+            {
+                isSliding = false;
+            }
         }
         GroundedMovement();
         checkGround();
@@ -146,6 +179,12 @@ public class ChrisMovement : MonoBehaviour
         move = Vector3.ClampMagnitude(move, speed);
     }
 
+    void SlideMovement()
+    {
+        move += forwardDirection;
+        move = Vector3.ClampMagnitude(move, speed);
+    }
+
     void checkGround()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask);
@@ -174,6 +213,18 @@ public class ChrisMovement : MonoBehaviour
         controller.center = crouchingCenter;
         transform.localScale = new Vector3(transform.localScale.x, crouchHeight, transform.localScale.z);
         isCrouching = true;
+
+        if (speed > runSpeed)
+        {
+            isSliding = true;
+            forwardDirection = transform.forward;
+            if (isGrounded)
+            {
+                IncreaseSpeed(slideSpeedIncrease);
+            }
+
+            slideTimer = maxSlideTimer;
+        }
     }
 
     void ExitCrouch()
@@ -182,5 +233,6 @@ public class ChrisMovement : MonoBehaviour
         controller.center = standingCenter;
         transform.localScale = new Vector3(transform.localScale.x, startHeight, transform.localScale.z);
         isCrouching = false;
+        isSliding = false;
     }
 }
