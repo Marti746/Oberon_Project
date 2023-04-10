@@ -27,7 +27,7 @@ public class FOV : MonoBehaviour
         cam.fieldOfView = Fov;
 
         fovWalk = Fov;
-        fovSprint = fovWalk + 10f;
+        fovSprint = fovWalk + 20f;
 
     }
 

@@ -189,7 +189,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769793635991902620}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -391,7 +391,7 @@ MonoBehaviour:
   wallRunSpeedDecrease: 1.5
   runSpeed: 10
   airSpeed: 0.1
-  sprintSpeed: 16
+  sprintSpeed: 20
   crouchSpeed: 4
   climbSpeed: 8
   normalGravity: -40
@@ -402,7 +402,7 @@ MonoBehaviour:
   maxWallJumpTimer: 0.1
   playerCamera: {fileID: 480678231802010447}
   cameraChangeTime: 10
-  wallRunTilt: 200
+  wallRunTilt: 20
   tilt: 0
 --- !u!114 &22713608910715739
 MonoBehaviour:

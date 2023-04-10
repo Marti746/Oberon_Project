@@ -37,7 +37,7 @@ public class ViewBobbing : MonoBehaviour
     void Update()
     {
 
-        if (chrisMovement.isGrounded && !chrisMovement.isSliding)
+        if (chrisMovement.isGrounded || chrisMovement.isWallRunning && !chrisMovement.isSliding)
         {
             //FOV stuff
             if (chrisMovement.isSprinting == true)
