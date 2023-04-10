@@ -37,7 +37,7 @@ public class ViewBobbing : MonoBehaviour
     void Update()
     {
 
-        if (chrisMovement.isGrounded == true)
+        if (chrisMovement.isGrounded && !chrisMovement.isSliding)
         {
             //FOV stuff
             if (chrisMovement.isSprinting == true)
@@ -73,7 +73,5 @@ public class ViewBobbing : MonoBehaviour
 
             FollowerInstance.Offset += sinAmountX;
         }
-
-
     }
 }

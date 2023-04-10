@@ -10,6 +10,7 @@ public class ChrisMovement : MonoBehaviour
     public Transform groundCheck;
 
     public LayerMask groundMask;
+    public LayerMask wallMask;
 
     //moves controller
     Vector3 move;
@@ -32,9 +33,16 @@ public class ChrisMovement : MonoBehaviour
 
     [HideInInspector] public bool isSliding;
 
+    [HideInInspector] public bool isWallRunning;
+
+
     public float slideSpeedIncrease;
 
     public float slideSpeedDecrease;
+
+    public float wallRunSpeedIncrease;
+
+    public float wallRunSpeedDecrease;
 
 
 
@@ -53,6 +61,8 @@ public class ChrisMovement : MonoBehaviour
 
     public float normalGravity;
 
+    public float wallRunGravity;
+
     public float jumpHeight;
 
 
@@ -68,6 +78,16 @@ public class ChrisMovement : MonoBehaviour
 
     public float maxSlideTimer;
 
+    //wall stuff
+    bool onLeftWall;
+
+    bool onRightWall;
+
+    RaycastHit leftWallHit;
+
+    RaycastHit rightWallHit;
+
+    Vector3 wallNormal;
 
     // Start is called before the first frame update
     void Start()
@@ -123,11 +143,12 @@ public class ChrisMovement : MonoBehaviour
     void Update()
     {
         HandleInput();
+        CheckWallRun();
         if (isGrounded && !isSliding)
         {
             GroundedMovement();
         }
-        else if (!isGrounded)
+        else if (!isGrounded && !isWallRunning)
         {
             AirMovement();
         }
@@ -141,6 +162,12 @@ public class ChrisMovement : MonoBehaviour
                 isSliding = false;
             }
         }
+        else if (isWallRunning)
+        {
+            WallRunMovement();
+            DecreaseSpeed(wallRunSpeedDecrease);
+        }
+
         GroundedMovement();
         checkGround();
         controller.Move(move * Time.deltaTime);
@@ -185,6 +212,23 @@ public class ChrisMovement : MonoBehaviour
         move = Vector3.ClampMagnitude(move, speed);
     }
 
+    void WallRunMovement()
+    {
+        if (input.z > (forwardDirection.z - 10f) && input.z < (forwardDirection.z + 10f))
+        {
+            move.z += forwardDirection.z;
+        }
+        else if (input.z < (forwardDirection.z - 10f) && input.z > (forwardDirection.z + 10f))
+        {
+            move.x = 0f;
+            move.y = 0f;
+            ExitWallRun();
+        }
+        move.x += input.x * airSpeed;
+
+        move = Vector3.ClampMagnitude(move, speed);
+    }
+
     void checkGround()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask);
@@ -194,17 +238,42 @@ public class ChrisMovement : MonoBehaviour
         }
     }
 
+    void CheckWallRun()
+    {
+        onLeftWall = Physics.Raycast(transform.position, -transform.right, out leftWallHit, 0.7f, wallMask);
+        onRightWall = Physics.Raycast(transform.position, -transform.right, out rightWallHit, 0.7f, wallMask);
+
+        if((onRightWall || onLeftWall) && !isWallRunning)
+        {
+            WallRun();
+        }
+        if((!onRightWall || !onLeftWall) && isWallRunning)
+        {
+            ExitWallRun();
+        }
+    }
+
     void ApplyGravity()
     {
-        gravity = normalGravity;
+        gravity = isWallRunning ? wallRunGravity : normalGravity;
         Yvelocity.y += gravity * Time.deltaTime;
         controller.Move(Yvelocity * Time.deltaTime);
     }
 
     void Jump()
     {
+        if (!isGrounded && !isWallRunning)
+        {
+            jumpCharges -= 1;
+        }
+        else if (isWallRunning)
+        {
+            ExitWallRun();
+            IncreaseSpeed(wallRunSpeedIncrease);
+        }
+        
         Yvelocity.y = Mathf.Sqrt(jumpHeight * -2f * normalGravity);
-        jumpCharges = jumpCharges - 1;
+        //jumpCharges = jumpCharges - 1;
     }
 
     void Crouch()
@@ -235,4 +304,27 @@ public class ChrisMovement : MonoBehaviour
         isCrouching = false;
         isSliding = false;
     }
+
+    void WallRun()
+    {
+        isWallRunning = true;
+        jumpCharges = 1;
+        IncreaseSpeed(wallRunSpeedIncrease);
+        Yvelocity = new Vector3(0f, 0f, 0f);
+
+        wallNormal = onLeftWall ? leftWallHit.normal : rightWallHit.normal;
+        forwardDirection = Vector3.Cross(wallNormal, Vector3.up);
+
+        if (Vector3.Dot(forwardDirection, transform.forward) < 0)
+        {
+            forwardDirection = -forwardDirection;
+        }
+    }
+
+    void ExitWallRun()
+    {
+        isWallRunning = false;
+    }
+
+
 }

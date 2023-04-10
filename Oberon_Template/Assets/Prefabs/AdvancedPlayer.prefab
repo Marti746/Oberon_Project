@@ -380,12 +380,16 @@ MonoBehaviour:
   isGrounded: 0
   isSprinting: 0
   isCrouching: 0
+  isSliding: 0
+  slideSpeedIncrease: 2.5
+  slideSpeedDecrease: 3
   runSpeed: 10
   airSpeed: 0.3
   sprintSpeed: 20
   crouchSpeed: 4
   normalGravity: -50
   jumpHeight: 4
+  maxSlideTimer: 2
 --- !u!114 &22713608910715739
 MonoBehaviour:
   m_ObjectHideFlags: 0
