@@ -56,6 +56,8 @@ public class ChrisMovement : MonoBehaviour
 
     public float crouchSpeed;
 
+    public float climbSpeed;
+
 
     float gravity;
 
@@ -67,20 +69,16 @@ public class ChrisMovement : MonoBehaviour
 
 
     float startHeight;
-
     float crouchHeight = 0.5f;
-
     Vector3 crouchingCenter = new Vector3(0, 0.5f, 0);
-
     Vector3 standingCenter = new Vector3(0, 0, 0);
 
     float slideTimer;
-
     public float maxSlideTimer;
 
     //wall stuff
+    bool hasWallRun = false;
     bool onLeftWall;
-
     bool onRightWall;
 
     RaycastHit leftWallHit;
@@ -88,6 +86,24 @@ public class ChrisMovement : MonoBehaviour
     RaycastHit rightWallHit;
 
     Vector3 wallNormal;
+
+    Vector3 lastWallNormal;
+
+    bool isClimbing;
+    bool canClimb;
+    bool hasClimbed;
+    RaycastHit wallHit;
+    float climbTimer;
+    public float maxClimbTimer;
+
+    bool isWallJumping;
+    float wallJumpTimer;
+    public float maxWallJumpTimer; 
+
+    public Camera playerCamera;
+    public float cameraChangeTime;
+    public float wallRunTilt;
+    public float tilt;
 
     // Start is called before the first frame update
     void Start()
@@ -138,17 +154,37 @@ public class ChrisMovement : MonoBehaviour
         }
     }
 
+    void CameraEffects()
+    {
+        if (isWallRunning)
+        {
+            if (onRightWall)
+            {
+                tilt = Mathf.Lerp(tilt, wallRunTilt, cameraChangeTime * Time.deltaTime);
+            }
+            if (onLeftWall)
+            {
+                tilt = Mathf.Lerp(tilt, -wallRunTilt, cameraChangeTime * Time.deltaTime);
+            }
+        }
+        if (!isWallRunning)
+        {
+            tilt = Mathf.Lerp(tilt, 0f, cameraChangeTime * Time.deltaTime);
+
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
         HandleInput();
         CheckWallRun();
+        CheckClimbing();
         if (isGrounded && !isSliding)
         {
             GroundedMovement();
         }
-        else if (!isGrounded && !isWallRunning)
+        else if (!isGrounded && !isWallRunning && !isClimbing)
         {
             AirMovement();
         }
@@ -167,11 +203,22 @@ public class ChrisMovement : MonoBehaviour
             WallRunMovement();
             DecreaseSpeed(wallRunSpeedDecrease);
         }
+        else if (isClimbing)
+        {
+            ClimbMovement();
+            climbTimer -= 1f * Time.deltaTime;
+            if (climbTimer < 0)
+            {
+                isClimbing = false;
+                hasClimbed = true;
+            }
+        }
 
         GroundedMovement();
         checkGround();
         controller.Move(move * Time.deltaTime);
         ApplyGravity();
+        CameraEffects();
     }
 
     void GroundedMovement()
@@ -202,6 +249,15 @@ public class ChrisMovement : MonoBehaviour
     {
         move.x += input.x * airSpeed;
         move.z += input.z * airSpeed;
+        if (isWallJumping)
+        {
+            move += forwardDirection;
+            wallJumpTimer -= 1f * Time.deltaTime;
+            if (wallJumpTimer < 0)
+            {
+                isWallJumping = false;
+            }
+        }
 
         move = Vector3.ClampMagnitude(move, speed);
     }
@@ -216,7 +272,7 @@ public class ChrisMovement : MonoBehaviour
     {
         if (input.z > (forwardDirection.z - 10f) && input.z < (forwardDirection.z + 10f))
         {
-            move.z += forwardDirection.z;
+            move += forwardDirection;
         }
         else if (input.z < (forwardDirection.z - 10f) && input.z > (forwardDirection.z + 10f))
         {
@@ -229,33 +285,70 @@ public class ChrisMovement : MonoBehaviour
         move = Vector3.ClampMagnitude(move, speed);
     }
 
+    void ClimbMovement()
+    {
+        forwardDirection = Vector3.up;
+        move.x += input.x * airSpeed;
+        move.z += input.z * airSpeed;
+
+        Yvelocity += forwardDirection;
+        speed = climbSpeed;
+
+        move = Vector3.ClampMagnitude(move, speed);
+        Yvelocity = Vector3.ClampMagnitude(Yvelocity, speed);
+    }
+
+
     void checkGround()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask);
         if (isGrounded)
         {
             jumpCharges = 1;
+            hasWallRun = false;
+
+            hasClimbed = false;
+            climbTimer = maxClimbTimer;
         }
     }
 
     void CheckWallRun()
     {
         onLeftWall = Physics.Raycast(transform.position, -transform.right, out leftWallHit, 0.7f, wallMask);
-        onRightWall = Physics.Raycast(transform.position, -transform.right, out rightWallHit, 0.7f, wallMask);
+        onRightWall = Physics.Raycast(transform.position, transform.right, out rightWallHit, 0.7f, wallMask);
 
         if((onRightWall || onLeftWall) && !isWallRunning)
         {
-            WallRun();
+            TestWallRun();
         }
-        if((!onRightWall || !onLeftWall) && isWallRunning)
+        if((!onRightWall && !onLeftWall) && isWallRunning)
         {
             ExitWallRun();
         }
     }
 
+    void TestWallRun()
+    {
+        wallNormal = onLeftWall ? leftWallHit.normal : rightWallHit.normal;
+        if (hasWallRun)
+        {
+            float wallAngle = Vector3.Angle(wallNormal, lastWallNormal);
+            if (wallAngle > 15)
+            {
+                WallRun();
+            }
+        }
+        else
+        {
+            WallRun();
+            hasWallRun = true;
+        }
+    }
+
+
     void ApplyGravity()
     {
-        gravity = isWallRunning ? wallRunGravity : normalGravity;
+        gravity = isWallRunning ? wallRunGravity : isClimbing ? 0f : normalGravity;
         Yvelocity.y += gravity * Time.deltaTime;
         controller.Move(Yvelocity * Time.deltaTime);
     }
@@ -271,9 +364,10 @@ public class ChrisMovement : MonoBehaviour
             ExitWallRun();
             IncreaseSpeed(wallRunSpeedIncrease);
         }
-        
+
+        hasClimbed = false;
+        climbTimer = maxClimbTimer;
         Yvelocity.y = Mathf.Sqrt(jumpHeight * -2f * normalGravity);
-        //jumpCharges = jumpCharges - 1;
     }
 
     void Crouch()
@@ -308,11 +402,10 @@ public class ChrisMovement : MonoBehaviour
     void WallRun()
     {
         isWallRunning = true;
-        jumpCharges = 1;
+        jumpCharges = 2;
         IncreaseSpeed(wallRunSpeedIncrease);
         Yvelocity = new Vector3(0f, 0f, 0f);
 
-        wallNormal = onLeftWall ? leftWallHit.normal : rightWallHit.normal;
         forwardDirection = Vector3.Cross(wallNormal, Vector3.up);
 
         if (Vector3.Dot(forwardDirection, transform.forward) < 0)
@@ -324,7 +417,25 @@ public class ChrisMovement : MonoBehaviour
     void ExitWallRun()
     {
         isWallRunning = false;
+        lastWallNormal = wallNormal;
+        forwardDirection = wallNormal;
+        isWallJumping = true;
+        wallJumpTimer = maxWallJumpTimer;
+        
     }
-
+    
+    void CheckClimbing()
+    {
+        canClimb = Physics.Raycast(transform.position, transform.forward, out wallHit, 0.7f, wallMask);
+        float wallAngle = Vector3.Angle(-wallHit.normal, transform.forward);
+        if (wallAngle < 15 && !hasClimbed && canClimb)
+        {
+            isClimbing = true;
+        }
+        else
+        {
+            isClimbing = false;
+        }
+    }
 
 }

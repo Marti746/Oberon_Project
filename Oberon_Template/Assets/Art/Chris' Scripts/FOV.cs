@@ -34,7 +34,7 @@ public class FOV : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (chrisMovement.isSprinting == true)
+        if (chrisMovement.isSprinting || chrisMovement.isWallRunning == true)
         {
             cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, fovSprint, 50 * Time.deltaTime) ;
         }
