@@ -6,8 +6,15 @@ using Rewired;
 public class Grappling : MonoBehaviour
 {
     [Header("References")]
+<<<<<<< Updated upstream
     //private PlayerMovement pm;
     private ChrisMovement pm;
+=======
+    ChrisMovement chrisMovement;
+    public GameObject player;
+
+    //private PlayerMovement pm;
+>>>>>>> Stashed changes
     public Transform cam;
     public Transform gunTip;
     public LayerMask whatIsGrappleable;
@@ -27,16 +34,21 @@ public class Grappling : MonoBehaviour
     [Header("Input")]
     public KeyCode grappleKey = KeyCode.Mouse1;
 
-    [SerializeField] private int playerID = 0;
-    [SerializeField] private Player player;
+    //[SerializeField] private int playerID = 0;
+    //[SerializeField] private Player player;
 
     private bool grappling;
 
     private void Start() 
     {
+<<<<<<< Updated upstream
         //pm = GetComponent<PlayerMovement>();
         pm = GetComponent<ChrisMovement>();
         player = ReInput.players.GetPlayer(playerID);
+=======
+        chrisMovement = player.GetComponent<ChrisMovement>();
+        //player = ReInput.players.GetPlayer(playerID);
+>>>>>>> Stashed changes
     }
 
     private void Update() 
