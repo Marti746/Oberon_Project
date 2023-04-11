@@ -198,11 +198,21 @@ public class ChrisMovement : MonoBehaviour
         HandleInput();
         CheckWallRun();
         CheckClimbing();
-        if (isGrounded && !isSliding && !isGrappling)
+        if (isGrappling)
+        {
+            GrappleMovement();
+            DecreaseSpeed(grappleLaunchSpeedDecrease);
+            grappleTimer -= 1f * Time.deltaTime;
+            if (grappleTimer < 0)
+            {
+                isGrappling = false;
+            }
+        }
+        else if (isGrounded && !isSliding)
         {
             GroundedMovement();
         }
-        else if (!isGrounded && !isWallRunning && !isClimbing && !isGrappling)
+        else if (!isGrounded && !isWallRunning && !isClimbing)
         {
             AirMovement();
         }
@@ -229,16 +239,6 @@ public class ChrisMovement : MonoBehaviour
             {
                 isClimbing = false;
                 hasClimbed = true;
-            }
-        }
-        else if (isGrappling)
-        {
-            GrappleMovement();
-            DecreaseSpeed(grappleLaunchSpeedDecrease);
-            grappleTimer -= 1f * Time.deltaTime;
-            if (grappleTimer < 0)
-            {
-                isGrappling = false;
             }
         }
 
@@ -327,6 +327,8 @@ public class ChrisMovement : MonoBehaviour
         Yvelocity = Vector3.ClampMagnitude(Yvelocity, speed);
     }
 
+    public Transform cam;
+    public float maxGrappleDistance;
     void GrappleMovement()
     {
         //Yvelocity.y = Mathf.Sqrt(jumpHeight * -2f * normalGravity);
@@ -336,9 +338,10 @@ public class ChrisMovement : MonoBehaviour
         Debug.Log(grappleRay);
         */
         
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out grappleHit, Mathf.Infinity, wallMask))
+        if (Physics.Raycast(cam.position, cam.forward, out grappleHit, maxGrappleDistance, wallMask))
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * grappleHit.distance, Color.yellow);
+            Vector3 grapplePoint = grappleHit.point;
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * grappleHit.distance, Color.yellow);
             Debug.Log("Did Hit");
         }
         else
