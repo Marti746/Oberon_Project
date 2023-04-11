@@ -230,7 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 466748944}
   m_Layer: 0
-  m_Name: GuntTip
+  m_Name: GunTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -550,6 +550,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdvancedPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 823895184}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: grappleSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: maxGrappleTimer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6552954148668875640, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -728,7 +740,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24576
   lr: {fileID: 823895178}
-  maxGrappleDistance: 25
+  maxGrappleDistance: 100
   grappleDelayTime: 0.25
   overshootYAxis: 2
   grapplingCd: 1
@@ -742,10 +754,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 823895177}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.0000001
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0

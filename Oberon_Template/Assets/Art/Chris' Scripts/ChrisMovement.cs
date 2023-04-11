@@ -35,6 +35,8 @@ public class ChrisMovement : MonoBehaviour
 
     [HideInInspector] public bool isWallRunning;
 
+    [HideInInspector] public bool isGrappling;
+
 
     public float slideSpeedIncrease;
 
@@ -57,6 +59,8 @@ public class ChrisMovement : MonoBehaviour
     public float crouchSpeed;
 
     public float climbSpeed;
+
+    public float grappleSpeed;
 
 
     float gravity;
@@ -97,20 +101,24 @@ public class ChrisMovement : MonoBehaviour
     public float maxClimbTimer;
 
     bool isWallJumping;
-    float wallJumpTimer;
-    public float maxWallJumpTimer; 
+    public float wallJumpTimer;
+    public float maxWallJumpTimer;
 
     public Camera playerCamera;
     public float cameraChangeTime;
     public float wallRunTilt;
     public float tilt;
 
+    public float grappleTimer;
+    public float maxGrappleTimer;
+    bool canGrapple;
+
     /*
      * Grappling and Swinging variables
      */
-    public bool activeGrapple;
 
-    Rigidbody rb;
+
+    public Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
@@ -159,6 +167,12 @@ public class ChrisMovement : MonoBehaviour
         {
             isSprinting = false;
         }
+        //Grapple
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            isGrappling = true;
+            GrappleMovement();
+        }
     }
 
     void CameraEffects()
@@ -185,13 +199,14 @@ public class ChrisMovement : MonoBehaviour
     void Update()
     {
         HandleInput();
+        //CheckGrappling();
         CheckWallRun();
         CheckClimbing();
-        if (isGrounded && !isSliding &&!activeGrapple)
+        if (isGrounded && !isSliding)
         {
             GroundedMovement();
         }
-        else if (!isGrounded && !isWallRunning && !isClimbing)
+        else if (!isGrounded && !isWallRunning && !isClimbing && !isGrappling)
         {
             AirMovement();
         }
@@ -220,6 +235,17 @@ public class ChrisMovement : MonoBehaviour
                 hasClimbed = true;
             }
         }
+        else if (isGrappling && canGrapple)
+        {
+            Debug.Log("yeah");
+            GrappleMovement();
+            grappleTimer -= 1f * Time.deltaTime;
+            if (grappleTimer < 0)
+            {
+                isGrappling = false;
+                canGrapple = true;
+            }
+        }
 
         GroundedMovement();
         checkGround();
@@ -230,8 +256,8 @@ public class ChrisMovement : MonoBehaviour
 
     void GroundedMovement()
     {
-        if (activeGrapple) return;
-        speed = isSprinting ? sprintSpeed : isCrouching ? crouchSpeed : runSpeed;
+
+        speed = isSprinting ? sprintSpeed : isCrouching ? crouchSpeed : isGrappling ? grappleSpeed : runSpeed;
         if (input.x != 0)
         {
             move.x += input.x * speed;
@@ -325,11 +351,11 @@ public class ChrisMovement : MonoBehaviour
         onLeftWall = Physics.Raycast(transform.position, -transform.right, out leftWallHit, 0.7f, wallMask);
         onRightWall = Physics.Raycast(transform.position, transform.right, out rightWallHit, 0.7f, wallMask);
 
-        if((onRightWall || onLeftWall) && !isWallRunning)
+        if ((onRightWall || onLeftWall) && !isWallRunning)
         {
             TestWallRun();
         }
-        if((!onRightWall && !onLeftWall) && isWallRunning)
+        if ((!onRightWall && !onLeftWall) && isWallRunning)
         {
             ExitWallRun();
         }
@@ -352,6 +378,11 @@ public class ChrisMovement : MonoBehaviour
             hasWallRun = true;
         }
     }
+
+    /*void CheckGrappling()
+    {
+
+    }*/
 
 
     void ApplyGravity()
@@ -429,9 +460,9 @@ public class ChrisMovement : MonoBehaviour
         forwardDirection = wallNormal;
         isWallJumping = true;
         wallJumpTimer = maxWallJumpTimer;
-        
+
     }
-    
+
     void CheckClimbing()
     {
         canClimb = Physics.Raycast(transform.position, transform.forward, out wallHit, 0.7f, wallMask);
@@ -450,28 +481,31 @@ public class ChrisMovement : MonoBehaviour
      * Grappling and Swinging Code hopefully
      */
     //private bool enableMovementOnNextTouch;
+
     private Vector3 velocityToSet;
     public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
     {
         Debug.Log("You going to be moving");
-        activeGrapple = true;
+        isGrappling = true;
+        canGrapple = true;
 
         velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
         Invoke(nameof(SetVelocity), 0.1f);
-
         Invoke(nameof(ResetRestrictions), 3f);
     }
 
     private void SetVelocity()
     {
+
         rb.velocity = velocityToSet;
+
         //Vector3 horizontalVelocity = controller.velocity;
         //horizontalVelocity.magnitude = velocityToSet;
     }
 
     public void ResetRestrictions()
     {
-        activeGrapple = false;
+        isGrappling = false;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -493,4 +527,26 @@ public class ChrisMovement : MonoBehaviour
 
         return velocityXZ + velocityY;
     }
+    
+    void GrappleMovement()
+    {
+
+        ExitGrapple();
+    }
+        
+    
+    void ExitGrapple()
+    {
+        canGrapple = true;
+        isGrappling = false;
+        grappleTimer = maxGrappleTimer;
+    }
+
 }
+
+
+
+
+
+
+

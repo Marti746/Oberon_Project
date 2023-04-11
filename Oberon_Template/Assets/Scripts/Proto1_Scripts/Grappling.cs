@@ -36,7 +36,7 @@ public class Grappling : MonoBehaviour
     {
         //pm = GetComponent<PlayerMovement>();
         pm = GetComponent<ChrisMovement>();
-        player = ReInput.players.GetPlayer(playerID);
+        //player = ReInput.players.GetPlayer(playerID);
     }
 
     private void Update() 
