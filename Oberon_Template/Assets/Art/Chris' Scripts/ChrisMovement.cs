@@ -202,7 +202,7 @@ public class ChrisMovement : MonoBehaviour
         {
             GroundedMovement();
         }
-        else if (!isGrounded && !isWallRunning && !isClimbing)
+        else if (!isGrounded && !isWallRunning && !isClimbing && !isGrappling)
         {
             AirMovement();
         }
@@ -329,8 +329,26 @@ public class ChrisMovement : MonoBehaviour
 
     void GrappleMovement()
     {
+        //Yvelocity.y = Mathf.Sqrt(jumpHeight * -2f * normalGravity);
+
+        /*
+        var grappleRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.Log(grappleRay);
+        */
         
-        //forwardDirection = Vector3.up;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out grappleHit, Mathf.Infinity, wallMask))
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * grappleHit.distance, Color.yellow);
+            Debug.Log("Did Hit");
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+            Debug.Log("Did not Hit");
+        }
+
+        //transform.position = grappleRay;
+
         move.x += input.x * grappleLaunchSpeed;
         move.z += input.z * grappleLaunchSpeed;
 
