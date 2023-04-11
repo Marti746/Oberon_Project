@@ -35,8 +35,6 @@ public class ChrisMovement : MonoBehaviour
 
     [HideInInspector] public bool isWallRunning;
 
-    [HideInInspector] public bool isGrappling;
-
 
     public float slideSpeedIncrease;
 
@@ -107,13 +105,6 @@ public class ChrisMovement : MonoBehaviour
     public float wallRunTilt;
     public float tilt;
 
-    /*
-     * Grappling and Swinging Code Possibly
-     */
-    [Header("Input")]
-    public KeyCode grappleKey = KeyCode.Mouse1;
-    public bool activeGrapple;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -161,10 +152,6 @@ public class ChrisMovement : MonoBehaviour
         {
             isSprinting = false;
         }
-        //if (Input.GetKeyCode(grappleKey))
-        //{
-        //    isGrappling= true;
-        //}
     }
 
     void CameraEffects()
@@ -193,7 +180,7 @@ public class ChrisMovement : MonoBehaviour
         HandleInput();
         CheckWallRun();
         CheckClimbing();
-        if (isGrounded && !isSliding && !activeGrapple)
+        if (isGrounded && !isSliding)
         {
             GroundedMovement();
         }
@@ -225,9 +212,6 @@ public class ChrisMovement : MonoBehaviour
                 isClimbing = false;
                 hasClimbed = true;
             }
-        } else if (isGrappling)
-        {
-            if (activeGrapple) return;
         }
 
         GroundedMovement();
@@ -454,42 +438,4 @@ public class ChrisMovement : MonoBehaviour
         }
     }
 
-    /*
-     * Grapple and Swinging Added Code
-     */
-    private Vector3 velocityToSet;
-    private bool enableMovementOnNextTouch;
-    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
-    {
-        activeGrapple = true;
-
-        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
-        Invoke(nameof(SetVelocity), 0.1f);
-
-        Invoke(nameof(ResetRestrictions), 3f);
-    }
-
-    private void SetVelocity()
-    {
-        enableMovementOnNextTouch = true;
-        //rb.velocity = velocityToSet;
-    }
-
-    public void ResetRestrictions()
-    {
-        activeGrapple = false;
-    }
-
-    public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
-    {
-        float gravity = Physics.gravity.y;
-        float displacementY = endPoint.y - startPoint.y;
-        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
-
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
-        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity)
-            + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
-
-        return velocityXZ + velocityY;
-    }
 }
