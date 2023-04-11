@@ -105,6 +105,13 @@ public class ChrisMovement : MonoBehaviour
     public float wallRunTilt;
     public float tilt;
 
+    /*
+     * Grappling and Swinging variables
+     */
+    public bool activeGrapple;
+
+    Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -180,7 +187,7 @@ public class ChrisMovement : MonoBehaviour
         HandleInput();
         CheckWallRun();
         CheckClimbing();
-        if (isGrounded && !isSliding)
+        if (isGrounded && !isSliding &&!activeGrapple)
         {
             GroundedMovement();
         }
@@ -223,6 +230,7 @@ public class ChrisMovement : MonoBehaviour
 
     void GroundedMovement()
     {
+        if (activeGrapple) return;
         speed = isSprinting ? sprintSpeed : isCrouching ? crouchSpeed : runSpeed;
         if (input.x != 0)
         {
@@ -438,4 +446,51 @@ public class ChrisMovement : MonoBehaviour
         }
     }
 
+    /*
+     * Grappling and Swinging Code hopefully
+     */
+    //private bool enableMovementOnNextTouch;
+    private Vector3 velocityToSet;
+    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
+    {
+        Debug.Log("You going to be moving");
+        activeGrapple = true;
+
+        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(SetVelocity), 0.1f);
+
+        Invoke(nameof(ResetRestrictions), 3f);
+    }
+
+    private void SetVelocity()
+    {
+        rb.velocity = velocityToSet;
+        //Vector3 horizontalVelocity = controller.velocity;
+        //horizontalVelocity.magnitude = velocityToSet;
+    }
+
+    public void ResetRestrictions()
+    {
+        activeGrapple = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        ResetRestrictions();
+
+        GetComponent<Grappling>().StopGrapple();
+    }
+
+    public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+    {
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity)
+            + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
+
+        return velocityXZ + velocityY;
+    }
 }

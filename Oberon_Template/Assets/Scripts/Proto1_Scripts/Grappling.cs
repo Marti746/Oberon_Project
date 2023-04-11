@@ -6,7 +6,8 @@ using Rewired;
 public class Grappling : MonoBehaviour
 {
     [Header("References")]
-    private PlayerMovement pm;
+    //private PlayerMovement pm;
+    private ChrisMovement pm;
     public Transform cam;
     public Transform gunTip;
     public LayerMask whatIsGrappleable;
@@ -33,13 +34,16 @@ public class Grappling : MonoBehaviour
 
     private void Start() 
     {
-        pm = GetComponent<PlayerMovement>();
+        //pm = GetComponent<PlayerMovement>();
+        pm = GetComponent<ChrisMovement>();
         player = ReInput.players.GetPlayer(playerID);
     }
 
     private void Update() 
     {
-        if (player.GetButtonDown("Grappling"))
+        //if (player.GetButtonDown())
+        //    StartGrapple();
+        if (Input.GetKeyDown(grappleKey))
             StartGrapple();
         
         if (grapplingCdTimer > 0)
@@ -58,33 +62,33 @@ public class Grappling : MonoBehaviour
             return;
         
         // deactivate active swinging
-        GetComponent<Swinging>().StopSwing();
+        //GetComponent<Swinging>().StopSwing();
         grappling = true;
 
-        pm.freeze = true;
+        //pm.freeze = true;
 
         RaycastHit hit;
         if (Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable))
         {
             grapplePoint = hit.point;
-
+            Debug.Log("I hit something");
             Invoke(nameof(ExcuteGrapple), grappleDelayTime);
         }
         else
         {
             grapplePoint = cam.position + cam.forward * maxGrappleDistance;
-
+            Debug.Log("I am in the else");
             Invoke(nameof(StopGrapple), grappleDelayTime);
         }
-
+        //Debug.Log("I am in StartGrapple");
         lr.enabled = true;
         lr.SetPosition(1, grapplePoint);
     }
 
     private void ExcuteGrapple()
     {
-        pm.freeze = false;
-
+        //pm.freeze = false;
+        Debug.Log("I am going to pull you");
         Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
 
         float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
@@ -93,13 +97,13 @@ public class Grappling : MonoBehaviour
         if (grapplePointRelativeYPos < 0) highestPointOnArc = overshootYAxis;
 
         pm.JumpToPosition(grapplePoint, highestPointOnArc);
-
+        
         Invoke(nameof(StopGrapple), 1f);
     }
 
     public void StopGrapple()
     {
-        pm.freeze = false;
+        //pm.freeze = false;
 
         grappling = false;
 
