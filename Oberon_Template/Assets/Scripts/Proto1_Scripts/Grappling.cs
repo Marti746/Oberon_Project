@@ -6,7 +6,8 @@ using Rewired;
 public class Grappling : MonoBehaviour
 {
     [Header("References")]
-    private PlayerMovement pm;
+    //private PlayerMovement pm;
+    private ChrisMovement pm;
     public Transform cam;
     public Transform gunTip;
     public LayerMask whatIsGrappleable;
@@ -33,7 +34,8 @@ public class Grappling : MonoBehaviour
 
     private void Start() 
     {
-        pm = GetComponent<PlayerMovement>();
+        //pm = GetComponent<PlayerMovement>();
+        pm = GetComponent<ChrisMovement>();
         player = ReInput.players.GetPlayer(playerID);
     }
 
@@ -61,7 +63,7 @@ public class Grappling : MonoBehaviour
         GetComponent<Swinging>().StopSwing();
         grappling = true;
 
-        pm.freeze = true;
+        //pm.freeze = true;
 
         RaycastHit hit;
         if (Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable))
@@ -83,7 +85,7 @@ public class Grappling : MonoBehaviour
 
     private void ExcuteGrapple()
     {
-        pm.freeze = false;
+        //pm.freeze = false;
 
         Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
 
@@ -99,7 +101,7 @@ public class Grappling : MonoBehaviour
 
     public void StopGrapple()
     {
-        pm.freeze = false;
+        //pm.freeze = false;
 
         grappling = false;
 
