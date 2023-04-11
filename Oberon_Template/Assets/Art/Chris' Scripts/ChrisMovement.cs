@@ -116,6 +116,8 @@ public class ChrisMovement : MonoBehaviour
     public float grappleTimer;
     public float maxGrappleTimer;
     RaycastHit grappleHit;
+    bool hasGrappleCast;
+
 
     public Rigidbody rb;
 
@@ -169,6 +171,7 @@ public class ChrisMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             isGrappling = true;
+            hasGrappleCast = true;
         }
     }
 
@@ -202,6 +205,7 @@ public class ChrisMovement : MonoBehaviour
         {
             GrappleMovement();
             DecreaseSpeed(grappleLaunchSpeedDecrease);
+
             grappleTimer -= 1f * Time.deltaTime;
             if (grappleTimer < 0)
             {
@@ -331,26 +335,22 @@ public class ChrisMovement : MonoBehaviour
     public float maxGrappleDistance;
     void GrappleMovement()
     {
-        //Yvelocity.y = Mathf.Sqrt(jumpHeight * -2f * normalGravity);
-
-        /*
-        var grappleRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.Log(grappleRay);
-        */
+        if (hasGrappleCast == true)
+        {
+            if (Physics.Raycast(cam.position, cam.forward, out grappleHit, maxGrappleDistance, wallMask))
+            {
+                Vector3 grapplePoint = grappleHit.point;
+                //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * grappleHit.distance, Color.yellow);
+                Debug.Log("Did Hit");
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+                Debug.Log("Did not Hit");
+            }
+            hasGrappleCast = false;
+        }
         
-        if (Physics.Raycast(cam.position, cam.forward, out grappleHit, maxGrappleDistance, wallMask))
-        {
-            Vector3 grapplePoint = grappleHit.point;
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * grappleHit.distance, Color.yellow);
-            Debug.Log("Did Hit");
-        }
-        else
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-            Debug.Log("Did not Hit");
-        }
-
-        //transform.position = grappleRay;
 
         move.x += input.x * grappleLaunchSpeed;
         move.z += input.z * grappleLaunchSpeed;
@@ -504,6 +504,17 @@ public class ChrisMovement : MonoBehaviour
         {
             isClimbing = false;
         }
+    }
+
+    void Grapple()
+    {
+        
+        ExitGrapple();
+    }
+
+    void ExitGrapple()
+    {
+
     }
 
 }
