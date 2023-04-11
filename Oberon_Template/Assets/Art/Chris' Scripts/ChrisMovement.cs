@@ -35,8 +35,6 @@ public class ChrisMovement : MonoBehaviour
 
     [HideInInspector] public bool isWallRunning;
 
-    [HideInInspector] public bool isGrappling;
-
 
     public float slideSpeedIncrease;
 
@@ -45,6 +43,11 @@ public class ChrisMovement : MonoBehaviour
     public float wallRunSpeedIncrease;
 
     public float wallRunSpeedDecrease;
+
+    public float grappleLaunchSpeedIncrease;
+
+    public float grappleLaunchSpeedDecrease;
+
 
 
 
@@ -60,7 +63,7 @@ public class ChrisMovement : MonoBehaviour
 
     public float climbSpeed;
 
-    public float grappleSpeed;
+    public float grappleLaunchSpeed;
 
 
     float gravity;
@@ -109,14 +112,10 @@ public class ChrisMovement : MonoBehaviour
     public float wallRunTilt;
     public float tilt;
 
+    public bool isGrappling;
     public float grappleTimer;
     public float maxGrappleTimer;
-    bool canGrapple;
-
-    /*
-     * Grappling and Swinging variables
-     */
-
+    RaycastHit grappleHit;
 
     public Rigidbody rb;
 
@@ -167,11 +166,9 @@ public class ChrisMovement : MonoBehaviour
         {
             isSprinting = false;
         }
-        //Grapple
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             isGrappling = true;
-            GrappleMovement();
         }
     }
 
@@ -199,14 +196,13 @@ public class ChrisMovement : MonoBehaviour
     void Update()
     {
         HandleInput();
-        //CheckGrappling();
         CheckWallRun();
         CheckClimbing();
-        if (isGrounded && !isSliding)
+        if (isGrounded && !isSliding && !isGrappling)
         {
             GroundedMovement();
         }
-        else if (!isGrounded && !isWallRunning && !isClimbing && !isGrappling)
+        else if (!isGrounded && !isWallRunning && !isClimbing)
         {
             AirMovement();
         }
@@ -235,15 +231,14 @@ public class ChrisMovement : MonoBehaviour
                 hasClimbed = true;
             }
         }
-        else if (isGrappling && canGrapple)
+        else if (isGrappling)
         {
-            Debug.Log("yeah");
             GrappleMovement();
+            DecreaseSpeed(grappleLaunchSpeedDecrease);
             grappleTimer -= 1f * Time.deltaTime;
             if (grappleTimer < 0)
             {
                 isGrappling = false;
-                canGrapple = true;
             }
         }
 
@@ -257,7 +252,7 @@ public class ChrisMovement : MonoBehaviour
     void GroundedMovement()
     {
 
-        speed = isSprinting ? sprintSpeed : isCrouching ? crouchSpeed : isGrappling ? grappleSpeed : runSpeed;
+        speed = isSprinting ? sprintSpeed : isCrouching ? crouchSpeed : runSpeed;
         if (input.x != 0)
         {
             move.x += input.x * speed;
@@ -332,6 +327,25 @@ public class ChrisMovement : MonoBehaviour
         Yvelocity = Vector3.ClampMagnitude(Yvelocity, speed);
     }
 
+    void GrappleMovement()
+    {
+        
+        //forwardDirection = Vector3.up;
+        move.x += input.x * grappleLaunchSpeed;
+        move.z += input.z * grappleLaunchSpeed;
+
+        Yvelocity += forwardDirection;
+        speed = grappleLaunchSpeed;
+
+        move = Vector3.ClampMagnitude(move, speed);
+        Yvelocity = Vector3.ClampMagnitude(Yvelocity, speed);
+
+        if(grappleTimer < 0)
+        {
+            grappleTimer = maxGrappleTimer;
+        }
+        
+    }
 
     void checkGround()
     {
@@ -378,12 +392,6 @@ public class ChrisMovement : MonoBehaviour
             hasWallRun = true;
         }
     }
-
-    /*void CheckGrappling()
-    {
-
-    }*/
-
 
     void ApplyGravity()
     {
@@ -475,71 +483,6 @@ public class ChrisMovement : MonoBehaviour
         {
             isClimbing = false;
         }
-    }
-
-    /*
-     * Grappling and Swinging Code hopefully
-     */
-    //private bool enableMovementOnNextTouch;
-
-    private Vector3 velocityToSet;
-    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
-    {
-        Debug.Log("You going to be moving");
-        isGrappling = true;
-        canGrapple = true;
-
-        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
-        Invoke(nameof(SetVelocity), 0.1f);
-        Invoke(nameof(ResetRestrictions), 3f);
-    }
-
-    private void SetVelocity()
-    {
-
-        rb.velocity = velocityToSet;
-
-        //Vector3 horizontalVelocity = controller.velocity;
-        //horizontalVelocity.magnitude = velocityToSet;
-    }
-
-    public void ResetRestrictions()
-    {
-        isGrappling = false;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        ResetRestrictions();
-
-        GetComponent<Grappling>().StopGrapple();
-    }
-
-    public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
-    {
-        float gravity = Physics.gravity.y;
-        float displacementY = endPoint.y - startPoint.y;
-        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
-
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
-        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity)
-            + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
-
-        return velocityXZ + velocityY;
-    }
-    
-    void GrappleMovement()
-    {
-
-        ExitGrapple();
-    }
-        
-    
-    void ExitGrapple()
-    {
-        canGrapple = true;
-        isGrappling = false;
-        grappleTimer = maxGrappleTimer;
     }
 
 }

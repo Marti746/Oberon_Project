@@ -559,9 +559,33 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: grappleTimer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
       propertyPath: maxGrappleTimer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: grappleLaunchSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: grappleLaunchSpeedDecrease
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: grappleLaunchSpeedIncrease
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519518112072278861, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519518112072278861, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 554549c9dfa6db8468320b4af6fba257, type: 3}
     - target: {fileID: 6552954148668875640, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -722,30 +746,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &823895179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 823895177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e42ba3c057c27d4ab4f0ca3ee5d794b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 1227364624}
-  gunTip: {fileID: 466748944}
-  whatIsGrappleable:
-    serializedVersion: 2
-    m_Bits: 24576
-  lr: {fileID: 823895178}
-  maxGrappleDistance: 100
-  grappleDelayTime: 0.25
-  overshootYAxis: 2
-  grapplingCd: 1
-  grappleKey: 324
-  playerID: 0
 --- !u!54 &823895184
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -859,11 +859,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1227364624 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6772212997135125065, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
-  m_PrefabInstance: {fileID: 823895174}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1638971958
 GameObject:
   m_ObjectHideFlags: 0
