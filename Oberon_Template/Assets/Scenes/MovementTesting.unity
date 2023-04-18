@@ -245,6 +245,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &173692545 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2109259638152221960, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+  m_PrefabInstance: {fileID: 823895174}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &317857477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -276,6 +281,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 2542053416696071145, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3532643579327046082, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
       propertyPath: m_Layer
       value: 13
@@ -288,13 +297,37 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 4055434758003581500, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4055434758003581500, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4394546891321689982, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 5048706811822726306, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6229685878315915529, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
       propertyPath: m_Layer
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229685878315915531, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229685878315915531, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229685878315915531, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6398303624406160968, guid: d0d34f1da5de66946aa636f2446700f3, type: 3}
       propertyPath: m_Layer
@@ -795,18 +828,18 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.800148, b: 0.6556604, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
+    m_Bias: 0
     m_NormalBias: 0.4
     m_NearPlane: 0.1
     m_CullingMatrixOverride:
@@ -892,6 +925,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdvancedPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3469616415811153977, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 173692545}
     - target: {fileID: 4501135115541226969, guid: a408a07923c34ba43a99bdfe40ebf200, type: 3}
       propertyPath: m_CameraType
       value: 0
@@ -1495,7 +1532,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 82939c35500156b43aa3aeb3aad169bb, type: 2}
+  - {fileID: 2100000, guid: 7268a4ea71d545647ab76348ebc0b0a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
