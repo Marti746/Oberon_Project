@@ -125,7 +125,7 @@ Material:
     - _GlossyReflections: 1
     - _Highlight_Size: 0.75
     - _Higlight_Blend: 0
-    - _Metalic: 0.08
+    - _Metalic: 0.68
     - _Metallic: 0.428
     - _Mode: 0
     - _OcclusionStrength: 1
